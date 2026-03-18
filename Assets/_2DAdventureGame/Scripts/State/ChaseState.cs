@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class ChaseState : IState
 {
+    public MonsterState MonsterState => MonsterState.Chase;
+
     private AttackMonsterAIComponent ai;
     private float attackRange = 1.5f;
     private float detectRange = 5f;
-    private float stateConvertDelay = 3f;
-    private float delayTimer = 0f;
     private Vector2 direction;
 
     private Vector2 playerRandomPosition;
@@ -19,7 +19,7 @@ public class ChaseState : IState
     }
     public void Enter()
     {
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        
     }
 
     public void Exit()
@@ -29,29 +29,20 @@ public class ChaseState : IState
     public void FixedUpdate()
     {
         float distance = Vector2.Distance(ai.transform.position, PlayerController.player.transform.position);
+        direction = (playerRandomPosition - (Vector2)ai.transform.position).normalized; 
 
-        if (distance <= attackRange)
-        {
-            ai.ChangeState(new AttackState(ai));
-            ai.Animation.SetStop(direction);
-            return;
-        }
-
+        // 인식 범위에서 벗어났을 때 잠시 멈췄다가 Idle 전환
         if (distance > detectRange)
         {
             ai.Movement.StopMonster();
             ai.Animation.SetStop(direction);
-            delayTimer += Time.fixedDeltaTime;
-            if (delayTimer >= stateConvertDelay)
-            {
-                ai.ChangeState(new WanderState(ai));
-                return;
-            }
         }
+
+        // 인심 범위 내일 때 쫓아가기
         else
         {
             ai.Movement.Move(playerRandomPosition);
-            delayTimer = 0f;
+            ai.Animation.SetMove(direction);
         }
     }
 

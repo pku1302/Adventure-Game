@@ -24,13 +24,6 @@ public class WorkMonsterAIComponent : AIComponent
     void Update()
     {
         timer -= Time.deltaTime;
-
-        if (timer <= 0)
-        {
-            Debug.Log("음식 생성");
-            stateMachine.ChangeState(new CreateFoodState(this));
-            timer = timeInterval;
-        }
         stateMachine.Update();
     }
 

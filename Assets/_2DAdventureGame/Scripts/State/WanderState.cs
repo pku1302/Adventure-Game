@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WanderState : IState
 {
+    public MonsterState MonsterState => MonsterState.Wander;
+
     private AIComponent ai;
     private Vector2 targetPosition;
     private float time = 4f;
@@ -39,16 +41,7 @@ public class WanderState : IState
     public void FixedUpdate()
     {
         float distance = Vector2.Distance(ai.transform.position, targetPosition);
-
-        if (ai is AttackMonsterAIComponent)
-        {
-            float playerDistance = Vector2.Distance(ai.transform.position, PlayerController.player.transform.position);
-            if (playerDistance <= detectRange)
-            {
-                ai.ChangeState(new ChaseState(ai as AttackMonsterAIComponent));
-                return;
-            }
-        }
+        Vector2 direction = targetPosition- (Vector2)ai.transform.position;
 
         if (distance < 0.1f)
         {
@@ -67,6 +60,7 @@ public class WanderState : IState
         else if(isWalking)
         {
             ai.Movement.Move(targetPosition);
+            ai.Animation.SetMove(direction);
         }
 
         if (!isWalking && timer <= 0f)

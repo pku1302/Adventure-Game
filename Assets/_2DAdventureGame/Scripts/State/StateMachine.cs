@@ -14,6 +14,8 @@ public class StateMachine
 
     public void ChangeState(IState newState)
     {
+        if (currentState.MonsterState == newState.MonsterState) return;
+
         currentState.Exit();
         currentState = newState;
         currentState.Enter();
@@ -22,6 +24,7 @@ public class StateMachine
     public void Update()
     {
         currentState?.Update();
+        Debug.Log(currentState.MonsterState);
     }
 
     public void FixedUpdate()

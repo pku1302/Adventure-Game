@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class AttackState : IState
 {
+    public MonsterState MonsterState => MonsterState.Attack;
+    private float attackCoolTime;
+
     private AttackMonsterAIComponent ai;
-    private float attackDelay = 2f;
-    private float attackDelayTimer = 0f;
     private Vector2 direction;
+    private bool canAttack = true;
 
     public AttackState(AttackMonsterAIComponent ai)
     {
@@ -14,33 +16,49 @@ public class AttackState : IState
 
     public void Enter()
     {
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
-        ai.Animation.SetAttack(direction);
-        ai.Movement.StopMonster();
-        ai.Attack.direction = direction;
+        Attack();
+        ai.OnAttackEnd += HandleAttackEnd;
+        attackCoolTime = ai.Monster.Data.attackSpeed;
     }
 
     public void Exit()
     {
+        ai.OnAttackEnd -= HandleAttackEnd;
+    }
+
+    void HandleAttackEnd()
+    {
+        canAttack = false;
+    }
+
+    void Attack()
+    {
+        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        ai.Animation.SetAttack(direction);
+        ai.Attack.direction = direction;
     }
 
     public void FixedUpdate()
     {
+        ai.Movement.StopMonster();
+        if(!canAttack)
+        {
+            ai.Animation.SetStop(direction);
+        }
     }
 
     public void Update()
     {
-        AnimatorStateInfo state = ai.Animation.animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("Attack") && state.normalizedTime >= 1f)
+        if (!canAttack)
         {
-            ai.Animation.SetStop(direction);
+            attackCoolTime -= Time.deltaTime;
         }
 
-        attackDelayTimer += Time.deltaTime;
-
-        if (attackDelayTimer >= attackDelay)
+        if (attackCoolTime <= 0f && ai.IsPlayerInAttackRange())
         {
-            ai.ChangeState(new ChaseState(ai));
+            Attack();
+            attackCoolTime = ai.Monster.Data.attackSpeed;
+            canAttack = true;
         }
     }
 }

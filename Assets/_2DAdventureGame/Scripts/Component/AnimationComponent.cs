@@ -6,16 +6,19 @@ public class AnimationComponent : MonoBehaviour
     public Animator animator;
     public Vector2 lastDirection;
 
+    private bool isDead = false;
+    private AIComponent ai;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
-    }
+        ai = GetComponent<AIComponent>();
+    }   
 
     public void SetMove(Vector2 direction)
     {
         lastDirection = direction;
-
-        animator.SetTrigger("Move");
+        animator.SetFloat("Speed", ai.Movement.GetMoveSpeed());
         animator.SetFloat("Move X", direction.x);
         animator.SetFloat("Move Y", direction.y);
     }
@@ -23,12 +26,15 @@ public class AnimationComponent : MonoBehaviour
     public void SetIdle()
     {
         animator.SetTrigger("Idle");
+        animator.SetFloat("Speed", ai.Movement.GetMoveSpeed());
         animator.SetFloat("Move X", lastDirection.x);
         animator.SetFloat("Move Y", lastDirection.y);
     }
 
     public void SetDead()
     {
+        if (isDead) return;
+        isDead = true;
         animator.SetFloat("Move X", lastDirection.x);
         animator.SetTrigger("Die");
     }
@@ -58,6 +64,7 @@ public class AnimationComponent : MonoBehaviour
     public void SetStop(Vector2 direction)
     {
         animator.SetTrigger("Stop");
+        animator.SetFloat("Speed", ai.Movement.GetMoveSpeed());
         animator.SetFloat("Move X", direction.x);
         animator.SetFloat("Move Y", direction.y);
     }

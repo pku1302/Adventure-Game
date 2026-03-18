@@ -24,13 +24,12 @@ public class MovementComponent : MonoBehaviour
     // 슬로우 디버프까지 계산한 총 이속을 리턴할 것임
     public float GetMoveSpeed()
     {
-        return monster.Data.moveSpeed;
+        return rb.linearVelocity.magnitude;
     }
 
     public void StopMonster()
     {
         rb.linearVelocity = Vector2.zero;
-        animationComponent.animator.SetFloat("Speed", 0);
     }
 
     public bool Move(Transform target)
@@ -60,8 +59,6 @@ public class MovementComponent : MonoBehaviour
             avoidTimer = avoidTime;
             direction = avoidDir;
         }
-        animationComponent.SetMove(direction);
-        animationComponent.animator.SetFloat("Speed", currentMoveSpeed);
         rb.linearVelocity = direction * currentMoveSpeed;
 
         return true;

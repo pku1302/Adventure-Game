@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterData
   moveSpeed: 1
   wanderRadius: 5
+  attackRange: 1
   maxHp: 100
+  attackSpeed: 1

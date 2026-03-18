@@ -32,7 +32,8 @@ public abstract class AIComponent : MonoBehaviour
 
     private void HandleDeath()
     {
-
+        stateMachine.ChangeState(new DeadState(this));
+        GetComponent<Collider2D>().enabled = false;
     }
 
 }

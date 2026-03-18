@@ -15,8 +15,6 @@ public class HitComponent : MonoBehaviour
     public float radius = 0.5f;
     public float duration = 0.3f;
 
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,14 +24,11 @@ public class HitComponent : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {     
     }
 
-    public void TakeHit(int damage, Vector2 direction)
-    {
-        ai.Health.TakeDamage(damage);
-        ai.Animation.SetHit(direction);
+    public void TakeHit()
+    {       
         AudioClip clip = hitSFXs[Random.Range(0, hitSFXs.Length)];
         audioSource.PlayOneShot(clip);
         SpawnHitEffect();

@@ -142,10 +142,6 @@ public class PlayerController : MonoBehaviour
     {
         if (amount < 0)
         {
-            if (isInvincible)
-            {
-                return;
-            }
             AudioClip clip = hitSFXs[Random.Range(0, hitSFXs.Length)];
             audioSource.PlayOneShot(clip);
             isInvincible = true;

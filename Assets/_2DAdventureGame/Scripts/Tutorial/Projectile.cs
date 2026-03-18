@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.ChangeState(new HitState(enemy, 10, m_direction * (-1)));
+            enemy.Health.TakeDamage(10, m_direction * (-1));
         }
         Destroy(gameObject);
     }
