@@ -1,0 +1,301 @@
+fileFormatVersion: 2
+guid: b1a17d65e3bce4c4ca375229b5b6c574
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7913588553758652644
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_0"
+  - first:
+      213: 7923824498578908610
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_1"
+  - first:
+      213: -8473362941696329045
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_2"
+  - first:
+      213: -1779347765708269079
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_3"
+  - first:
+      213: 4157168242608368697
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_4"
+  - first:
+      213: 8293713790704956225
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_5"
+  - first:
+      213: -4807310104899863385
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_6"
+  - first:
+      213: 5108083064349533730
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_7"
+  - first:
+      213: 3970913632142058252
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_8"
+  - first:
+      213: 3556320256563676743
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_9"
+  - first:
+      213: -6085451161859404996
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_10"
+  - first:
+      213: -5900477325494705004
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_11"
+  - first:
+      213: -3758510212976380602
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_12"
+  - first:
+      213: -8755895837358885200
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_13"
+  - first:
+      213: 2217229270000380905
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_14"
+  - first:
+      213: -3130098686313750443
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_15"
+  - first:
+      213: 585179453625262583
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_16"
+  - first:
+      213: -3873209085683567561
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_17"
+  - first:
+      213: -4893893151661721945
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_18"
+  - first:
+      213: 3072068502438027425
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_19"
+  - first:
+      213: -4774188376292559139
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_20"
+  - first:
+      213: 984796637563641401
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_21"
+  - first:
+      213: 2069841444157543539
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_22"
+  - first:
+      213: 5036549315911134715
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_23"
+  - first:
+      213: 4079201269402869549
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_24"
+  - first:
+      213: -5332017635945914283
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_25"
+  - first:
+      213: 4267975525192580023
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_26"
+  - first:
+      213: -4347393539646402837
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_27"
+  - first:
+      213: -1060089064867373564
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_28"
+  - first:
+      213: 1769076684324377279
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_29"
+  - first:
+      213: 3995221590801366510
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_30"
+  - first:
+      213: 4076176480291986025
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_31"
+  - first:
+      213: 6338536658980349896
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_32"
+  - first:
+      213: 8268750744844724719
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_33"
+  - first:
+      213: -1056081941685848591
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_34"
+  - first:
+      213: -3212313103983505959
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_35"
+  - first:
+      213: 1732617020444267634
+    second: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_36"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_0"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 492
+        height: 508
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c174e9a63294d2290800000000000000
+      internalID: -7913588553758652644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 865ad693f4100934ca818d50910e338f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_0": -7913588553758652644
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_1": 7923824498578908610
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_10": -6085451161859404996
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_11": -5900477325494705004
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_12": -3758510212976380602
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_13": -8755895837358885200
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_14": 2217229270000380905
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_15": -3130098686313750443
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_16": 585179453625262583
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_17": -3873209085683567561
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_18": -4893893151661721945
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_19": 3072068502438027425
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_2": -8473362941696329045
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_20": -4774188376292559139
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_21": 984796637563641401
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_22": 2069841444157543539
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_23": 5036549315911134715
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_24": 4079201269402869549
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_25": -5332017635945914283
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_26": 4267975525192580023
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_27": -4347393539646402837
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_28": -1060089064867373564
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_29": 1769076684324377279
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_3": -1779347765708269079
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_30": 3995221590801366510
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_31": 4076176480291986025
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_32": 6338536658980349896
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_33": 8268750744844724719
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_34": -1056081941685848591
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_35": -3212313103983505959
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_36": 1732617020444267634
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_37": 261676085
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_4": 4157168242608368697
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_5": 8293713790704956225
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_6": -4807310104899863385
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_7": 5108083064349533730
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_8": 3970913632142058252
+      "\uC2A4\uD504\uB77C\uC774\uD2B8-0005_9": 3556320256563676743
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
