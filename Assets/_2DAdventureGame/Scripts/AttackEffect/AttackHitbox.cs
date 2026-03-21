@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
+    private bool flag = false;
     public int damage = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
-        if (controller != null)
+        if (controller != null && !flag)
         {
+            flag = true;
             controller.ChangeHealth(damage * (-1));
         }
     }

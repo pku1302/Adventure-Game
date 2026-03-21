@@ -3,7 +3,6 @@ using UnityEngine;
 public class StateMachine
 {
     private IState currentState;
-
     public IState CurrentState => currentState;
 
     public void Initialize(IState startState)
@@ -24,7 +23,6 @@ public class StateMachine
     public void Update()
     {
         currentState?.Update();
-        Debug.Log(currentState.MonsterState);
     }
 
     public void FixedUpdate()

@@ -107,6 +107,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ea42c5c7d72e94c97165303d1a552e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  maxHealth: 5
+  speed: 3
+  dashSpeed: 6
+  dashCoolTime: 1
+  dashTime: 0.4
+  projectilePrefab: {fileID: 0}
+  timeInvincible: 2
   MoveAction:
     m_Name: Move
     m_Type: 0
@@ -156,10 +163,6 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
-  maxHealth: 5
-  speed: 3
-  projectilePrefab: {fileID: 0}
-  timeInvincible: 2
   LaunchAction:
     m_Name: Launch
     m_Type: 0
@@ -178,6 +181,16 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  RollAction:
+    m_Name: Roll
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 85a217b4-a028-47b6-8e08-b9dcb9746f1e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  hitSFXs: []
 --- !u!50 &6154785521547744963
 Rigidbody2D:
   serializedVersion: 5
