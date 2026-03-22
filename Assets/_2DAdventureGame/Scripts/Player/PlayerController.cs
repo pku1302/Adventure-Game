@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -88,7 +89,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (LaunchAction.WasPressedThisFrame())
+        if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())
         {
             Launch();
         }
@@ -150,8 +151,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(HitShake(0.1f, 0.2f));
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-
-        UIHandler.instance.SetHealthValue(currentHealth / (float)maxHealth);
     }
 
     private void Launch()
