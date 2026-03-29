@@ -13,16 +13,15 @@ public class Inventory : MonoBehaviour
     public int slotCount = 10;
     public ItemData testItem;
     public ItemData testItem2;
-    public RectTransform dragRoot;
-    public Image dragIconImage;
-    public TMP_Text dragText;
+    public Transform quickSlotParent;
 
     private List<InventorySlotUI> slotUIs = new List<InventorySlotUI>();
+    private InventorySlotUI[] quickSlotUIs = new InventorySlotUI[QuickSlotCount];
+    private const int QuickSlotCount = 5;
 
     private void Start()
     {
-        InventorySlotUI.SetDragIcon(dragRoot, dragIconImage, dragText);
-        for (int i = 0; i< slotCount; i++)
+        for (int i = 0; i< slotCount + QuickSlotCount; i++)
         {
             slots.Add(new InventorySlot(null, 0));
         }
@@ -40,13 +39,22 @@ public class Inventory : MonoBehaviour
             InventorySlotUI ui = go.GetComponent<InventorySlotUI>();
             slotUIs.Add(ui);
         }
+
+        for (int i = 0; i < QuickSlotCount; i++)
+        {
+            GameObject go = Instantiate(slotPrefab, quickSlotParent);
+            InventorySlotUI ui = go.GetComponent<InventorySlotUI>();
+            quickSlotUIs[i] = ui;
+            slotUIs.Add(ui);
+        }
     }
 
     public void AddItem(ItemData item, int amount)
     {
         foreach(var slot in slots)
         {
-            if (slot.item == item && item.isStackable)
+            // 같은 아이템은 카운트 증가
+            if (slot.item == item)
             {
                 slot.count += amount;
                 UpdateUI();
@@ -89,5 +97,39 @@ public class Inventory : MonoBehaviour
         var temp = slots[a];
         slots[a] = slots[b];
         slots[b] = temp;
+    }
+
+    public void Add(ItemData item, int count, int to)
+    {
+        if (slots[to].item == null)
+        {
+            slots[to].item = item;
+            slots[to].count += count;
+        }
+        else if (slots[to].item == item)
+        {
+            slots[to].count += count;
+        }
+    }
+
+    public void UseItem(InventorySlot slot, int index)
+    {
+        if (slot.item == null) return;
+        if (slot.item is ConsumableItem consumable)
+        {
+            consumable.Use();
+            slot.count--;
+            Debug.Log("아이템 사용됨");
+
+            if (slot.count <= 0)
+            {
+                slots[index].item = null;
+            }
+        }
+        else
+        {
+            Debug.Log("사용 불가");
+        }
+        UpdateUI();
     }
 }

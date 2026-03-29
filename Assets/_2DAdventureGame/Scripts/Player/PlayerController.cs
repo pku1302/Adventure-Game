@@ -2,38 +2,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public int maxHealth = 5;
     public float speed = 3.0f;
     public float dashSpeed = 6.0f;
-    public float dashCoolTime = 1.0f;
-    public float dashTime = 0.4f;
-
-    private float dashCoolTimer = 0.0f;
-    private float dashTimer = 0.0f;
-    private bool isDashing = false;
 
     public GameObject projectilePrefab;
     public int health { get { return currentHealth; } }
     public float timeInvincible = 2.0f;
-    public InputAction MoveAction;
-    public InputAction LaunchAction;
-    public InputAction TalkAction;
-    public InputAction RollAction;
 
     private int currentHealth;
     private Rigidbody2D rigidbody2d;
-    private Vector2 move;
     private bool isInvincible;
+    private bool isDashing = false;
+    private bool isLooting = false;
     private float damageCooldown;
     private Animator animator;
     private Vector2 moveDirection = new Vector2(1, 0);
     private AudioSource audioSource;
     public AudioClip[] hitSFXs;
-    private int currentDirection = 0;
-    private PlayerDash dash;
     private Vector2 mouseDirection;
 
     public static PlayerController player;
@@ -41,17 +31,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player = this;
-
-        MoveAction.Enable();
-        LaunchAction.Enable();
-        TalkAction.Enable();
-        RollAction.Enable();
-
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        dash = GetComponent<PlayerDash>();
     }
 
     // Update is called once per frame
@@ -59,26 +42,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        if(!isDashing)
+        if (!isDashing)
             mouseDirection = worldPos - transform.position;
 
-        move = MoveAction.ReadValue<Vector2>();
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
-
-        if (hit.collider != null)
-        {
-            FindFriend(hit);
-        }
-
-        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
-        {
-            moveDirection.Set(move.x, move.y);
-            moveDirection.Normalize();
-        }
-
-        animator.SetFloat("Look X", mouseDirection.x);
-        animator.SetFloat("Look Y", mouseDirection.y);
-        animator.SetFloat("Speed", move.magnitude);
 
         if (isInvincible)
         {
@@ -88,55 +55,70 @@ public class PlayerController : MonoBehaviour
                 isInvincible = false;
             }
         }
-
-        if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())
-        {
-            Launch();
-        }
-
-        if (RollAction.WasPressedThisFrame() && dashCoolTimer <= 0.0f)
-        {
-            animator.SetTrigger("Roll");
-            dashCoolTimer = dashCoolTime;
-            dashTimer = dashTime;
-            isDashing = true;
-            MoveAction.Disable();
-            LaunchAction.Disable();
-        }
-
-        if (dashCoolTimer > 0.0f)
-            dashCoolTimer -= Time.deltaTime;
     }
-
     private void FixedUpdate()
     {
-        Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.fixedDeltaTime;
-        Vector2 mDirection = mouseDirection.normalized;
         if (isDashing)
         {
-            dashTimer -= Time.fixedDeltaTime;
-            position = (Vector2)rigidbody2d.position + mDirection * dashSpeed * Time.fixedDeltaTime;
-            rigidbody2d.MovePosition(position);
-
-            if (dashTimer <= 0.0f)
-            {
-                isDashing = false;
-                MoveAction.Enable();
-                LaunchAction.Enable();
-            }
-        }
-        else
-        {
-            rigidbody2d.MovePosition(position);
+            M_Roll();
         }
     }
 
-    void FindFriend(RaycastHit2D hit)
+    public void Roll(Vector2 move)
     {
-        if (TalkAction.WasPressedThisFrame())
+        if (isDashing || isLooting)
         {
-            UIHandler.instance.DisplayDialogue();
+            return;
         }
+        animator.SetTrigger("Roll");
+        isDashing = true;
+    }
+
+    public void LootToggle()
+    {
+        isLooting = !isLooting;
+    }
+
+    public void EndDash()
+    {
+        isDashing = false;
+    }
+
+    private void M_Roll()
+    {
+        Vector2 mDirection = mouseDirection.normalized;
+        isDashing = true;
+
+        Vector2 position = (Vector2)rigidbody2d.position + mDirection * dashSpeed * Time.fixedDeltaTime;
+        rigidbody2d.MovePosition(position);
+    }
+
+    public void Move(Vector2 move)
+    {
+        if (isDashing || isLooting)
+        {
+            return;
+        }
+
+        Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.fixedDeltaTime;
+        rigidbody2d.MovePosition(position);
+    }
+
+    public void SetAnimation(Vector2 move)
+    {
+        if (isLooting)
+        {
+            return;
+        }
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            moveDirection.Set(move.x, move.y);
+            moveDirection.Normalize();
+        }
+
+        animator.SetFloat("Look X", mouseDirection.x);
+        animator.SetFloat("Look Y", mouseDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
     }
 
     public void ChangeHealth(int amount)
@@ -153,7 +135,7 @@ public class PlayerController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
     }
 
-    private void Launch()
+    public void Launch()
     {
         GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.1f, Quaternion.identity);
         Projectile projectile = projectileObject.GetComponent<Projectile>();

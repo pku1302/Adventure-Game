@@ -1,11 +1,10 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static Unity.VisualScripting.Member;
 
-
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IDragSource
 {
     public int index;
     public Image icon;
@@ -14,10 +13,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     private InventorySlot slot;
     private static InventorySlotUI selectedSlot;
-    private static InventorySlotUI draggedSlot;
-    private static RectTransform dragRect;
-    private static TMP_Text dragText;
-    private static Image dragIcon;
+
     private static bool isSplitMode;
     private static int splitAmount;
     private Inventory inventory;
@@ -45,7 +41,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         if (slot == null || slot.item == null) return;
 
-        draggedSlot = this;
+        DragData.DragSource = this;
 
         if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -62,29 +58,20 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             splitAmount = slot.count;
         }
 
-        dragRect.gameObject.SetActive(true);
-        dragIcon.sprite = icon.sprite;
-
-        if (dragText != null)
-        {
-            dragText.text = splitAmount > 1 ? splitAmount.ToString() : "";
-        }
+        DragIconUI.Instance.Show(icon.sprite);
+        DragIconUI.Instance.countText.text = splitAmount > 1 ? splitAmount.ToString() : "";
     }
 
     // 드래그 중
     public void OnDrag(PointerEventData eventData)
     {
-        dragRect.position = eventData.position;
+        DragIconUI.Instance.transform.position = eventData.position;
     }
 
     // 드래그 끝
     public void OnEndDrag(PointerEventData eventData)
     {
-        dragRect.gameObject.SetActive(false);
-
-        if (dragText != null)
-            dragText.text = "";
-
+        DragIconUI.Instance.Hide();
         isSplitMode = false;
         splitAmount = 0;
     }
@@ -92,54 +79,75 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     // 드롭 
     public void OnDrop(PointerEventData eventData)
     {
-        if (draggedSlot == null || draggedSlot == this)
+        if (DragData.DragSource == null || DragData.DragSource == this)
         {
             return;
         }
 
-        int from = draggedSlot.index;
-        int to = index;
+        var toSlot = inventory.slots[index];
 
-        var fromSlot = inventory.slots[from];
-        var toSlot = inventory.slots[to];
-
-        if (isSplitMode)
+        if (DragData.DragSource is InventorySlotUI invSource)
         {
-            if (toSlot.item == null)
+            int from = invSource.index;
+            int to = index;
+
+            var fromSlot = inventory.slots[from];
+
+            if (isSplitMode)
             {
-                toSlot.item = fromSlot.item;
-                toSlot.count = splitAmount;
-
-                fromSlot.count -= splitAmount;
-
-                if (fromSlot.count <= 0)
+                if (toSlot.item == null)
                 {
-                    fromSlot.item = null;
-                    fromSlot.count = 0;
+                    toSlot.item = fromSlot.item;
+                    toSlot.count = splitAmount;
+
+                    fromSlot.count -= splitAmount;
+
+                    if (fromSlot.count <= 0)
+                    {
+                        fromSlot.item = null;
+                        fromSlot.count = 0;
+                    }
                 }
-            }
-        }
-        else
-        {
-            if (toSlot.item != null &&
-                fromSlot.item == toSlot.item &&
-                fromSlot.item.isStackable)
-            {
-                inventory.Merge(from, to);
             }
             else
             {
-                inventory.Swap(from, to);
+                if (toSlot.item != null &&
+                    fromSlot.item == toSlot.item &&
+                    fromSlot.item.maxStack > 1)
+                {
+                    inventory.Merge(from, to);
+                }
+                else
+                {
+                    inventory.Swap(from, to);
+                }
             }
         }
+        else if (DragData.DragSource is LootSlotUI lootSource)
+        {
+            inventory.Add(lootSource.slotData.item, lootSource.slotData.count, index);
+            lootSource.OnDragEnd();
+        }
+
+        DragIconUI.Instance.Hide();
         inventory.UpdateUI();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (slot.item == null)
+        {
+            return;
+        }
+
         if (slot != null && slot.item != null)
         {
-            Select(); 
+            Select();
+        }
+
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            inventory.UseItem(slot, index);
         }
     }
 
@@ -151,20 +159,10 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         }
 
         selectedSlot = this;
-        background.color = Color.yellow;
     }
 
     void Deselect()
     {
         background.color = Color.white;
     }
-
-    public static void SetDragIcon(RectTransform root, Image img, TMP_Text text)
-    {
-        dragIcon = img;
-        dragText = text;
-        dragRect = root;
-    }
-
-
 }

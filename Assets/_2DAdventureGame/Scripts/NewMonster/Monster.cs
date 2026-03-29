@@ -15,10 +15,10 @@ public class Monster : MonoBehaviour
     private bool isLeft = false;
     private bool executed = false;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
     }
 
     // Update is called once per frame

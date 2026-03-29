@@ -5,8 +5,10 @@ public abstract class AIComponent : MonoBehaviour
     public MovementComponent Movement { get; private set; }
     public AnimationComponent Animation { get; private set; }
     public HealthComponent Health { get; private set; }
-    
     public HitComponent Hit { get; private set; }
+    public LootComponent Loot { get; private set; }
+
+    public LootTable lootTable;
 
     protected StateMachine stateMachine;
 
@@ -16,6 +18,7 @@ public abstract class AIComponent : MonoBehaviour
         Animation = GetComponent<AnimationComponent>();
         Health = GetComponent<HealthComponent>();
         Hit = GetComponent<HitComponent>();
+        Loot = GetComponent<LootComponent>();
 
         stateMachine = new StateMachine();
 
@@ -30,10 +33,17 @@ public abstract class AIComponent : MonoBehaviour
         stateMachine.ChangeState(newState);
     }
 
+    public MonsterState GetState()
+    {
+        return stateMachine.CurrentState.MonsterState;
+    }
+
     private void HandleDeath()
     {
         stateMachine.ChangeState(new DeadState(this));
-        GetComponent<Collider2D>().enabled = false;
+
+        LootComponent loot = GetComponent<LootComponent>();
+        loot.lootItems = lootTable.GenerateLoot();
     }
 
 }
