@@ -7,3 +7,4 @@ public enum ItemRarity
     Epic,
     Legendary
 }
+

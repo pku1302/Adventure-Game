@@ -74,9 +74,14 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
     }
 
-    public void LootToggle()
+    public void Loot()
     {
-        isLooting = !isLooting;
+        isLooting = true;
+    }
+
+    public void EndLooting()
+    {
+        isLooting = false;
     }
 
     public void EndDash()

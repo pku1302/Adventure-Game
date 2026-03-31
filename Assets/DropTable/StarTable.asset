@@ -15,5 +15,5 @@ MonoBehaviour:
   lootEntries:
   - item: {fileID: 11400000, guid: 09bd94c6ac22d124fa30b48d09d4d014, type: 2}
     dropChance: 1
-    minAmount: 0
-    maxAmount: 1
+    minAmount: 1
+    maxAmount: 2

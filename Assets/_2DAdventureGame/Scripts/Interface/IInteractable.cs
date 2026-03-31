@@ -4,6 +4,7 @@ public interface IInteractable
 {
     void OnHoverExit();
     void OnHoverEnter();
-    void Oninteract();
+    void StartInteract();
+    void QuitInteract();
     bool IsInteractable();
 }

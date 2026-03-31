@@ -41,7 +41,6 @@ public abstract class AIComponent : MonoBehaviour
     private void HandleDeath()
     {
         stateMachine.ChangeState(new DeadState(this));
-
         LootComponent loot = GetComponent<LootComponent>();
         loot.lootItems = lootTable.GenerateLoot();
     }

@@ -24,11 +24,13 @@ public class LootSlotUI : MonoBehaviour, IPointerClickHandler, IDragSource, IBeg
         {
             icon.sprite =  data.item.icon;
             countText.text = data.count > 1 ? data.count.ToString() : "";
+            background.color = RarityColorUtility.GetColor(slotData.item.rarity);
         }
         else
         {
             icon.sprite = null;
             countText.text = "";
+            background.color = Color.white;
         }
     }
 

@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1823f956afa2a4ba504e17db202a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
+  index: 0
   icon: {fileID: 4980935276268862379}
   background: {fileID: 5931160142476052477}
   countText: {fileID: 7913694026590024734}

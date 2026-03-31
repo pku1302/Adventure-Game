@@ -28,9 +28,11 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         {
             icon.sprite = slot.item.icon;
             countText.text = slot.count > 1 ? slot.count.ToString() : "";
+            background.color = RarityColorUtility.GetColor(slotData.item.rarity);
         }
         else
         {
+            background.color = Color.white;
             icon.sprite = null;
             countText.text = "";
         }

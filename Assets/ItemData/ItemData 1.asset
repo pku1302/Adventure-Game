@@ -15,5 +15,5 @@ MonoBehaviour:
   itemName: test 2
   description: 
   icon: {fileID: 21300000, guid: 53ddc2e2595140d449aa85be096cdc01, type: 3}
-  rarity: 0
+  rarity: 3
   maxStack: 5

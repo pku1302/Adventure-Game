@@ -118,17 +118,18 @@ public class InputManager : MonoBehaviour
         {
             if (lootComponent != null)
             {
-                lootComponent.Oninteract(); // ∑Á∆√ √¢ ¥›±‚
+                lootComponent.QuitInteract(); // ∑Á∆√ √¢ ¥›±‚
+                inventoryUI.SetActive(false);
                 lootComponent = null;
-                player.LootToggle();
+                player.EndLooting();
                 return;
             }
 
             else if (currentHover != null && currentHover.IsInteractable())
             {
                 lootComponent = currentHover;
-                lootComponent.Oninteract();
-                player.LootToggle();
+                lootComponent.StartInteract();
+                player.Loot();
             }
         }
     }
@@ -141,8 +142,8 @@ public class InputManager : MonoBehaviour
         }
         if (lootComponent != null)
         {
-            player.LootToggle();
-            lootComponent.Oninteract(); // ∑Á∆√ √¢ ¥›±‚
+            player.EndLooting();
+            lootComponent.QuitInteract();
             lootComponent = null;
         }
     }

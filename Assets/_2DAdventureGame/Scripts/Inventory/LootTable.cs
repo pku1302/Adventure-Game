@@ -26,7 +26,7 @@ public class LootTable : ScriptableObject
 
             if (roll <= entry.dropChance)
             {
-                int amount = Random.Range(entry.minAmount, entry.maxAmount + 1);
+                int amount = Random.Range(entry.minAmount , entry.maxAmount + 1);
 
                 result.Add(new InventorySlot(entry.item, amount));
             }

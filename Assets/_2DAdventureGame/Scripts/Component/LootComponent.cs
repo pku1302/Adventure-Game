@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +7,7 @@ public class LootComponent : MonoBehaviour, IInteractable
     public LootUI lootUI;
     public GameObject inventoryUI;
     public Transform player;
+    public bool isLootingDone = false;
 
     private SpriteRenderer spriteRenderer;
     private float interactDistance = 1f;
@@ -36,13 +36,12 @@ public class LootComponent : MonoBehaviour, IInteractable
         
     }
 
-    public void Oninteract()
+    public void StartInteract()
     {
         bool isInvOpen = inventoryUI.activeSelf;
         inventoryUI.SetActive(!isInvOpen);
-        lootUI.Toggle(this);
+        lootUI.OpenLootUI(this);
     }
-
     public bool IsInteractable()
     {
         float distance = Vector2.Distance(player.position, transform.position);
@@ -59,5 +58,10 @@ public class LootComponent : MonoBehaviour, IInteractable
         }
 
         return true;
+    }
+
+    public void QuitInteract()
+    {
+        lootUI.CloseLootUI();
     }
 }
