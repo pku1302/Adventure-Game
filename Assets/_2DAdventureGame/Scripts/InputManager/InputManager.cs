@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject radialMenu;
     public GameObject lootUI;
+    public PlayerItem itemHandler;
 
     private IInteractable currentHover; 
     private IInteractable lootComponent;
@@ -20,6 +21,7 @@ public class InputManager : MonoBehaviour
     public InputAction InventoryAction; // I
     public InputAction RadialMenuAction; // E
     public InputAction EscapeAction; // ESC
+    public InputAction MouseRightAction; // Mouse Right
     public bool IsInventoryOpen => inventoryUI.activeSelf;
 
     private Vector2 move;
@@ -27,6 +29,7 @@ public class InputManager : MonoBehaviour
     private void Start()
     {
         MoveAction.Enable();
+        MouseRightAction.Enable();
         LaunchAction.Enable();
         RollAction.Enable();
         InteractionAction.Enable();
@@ -42,6 +45,16 @@ public class InputManager : MonoBehaviour
         move = MoveAction.ReadValue<Vector2>();
 
         player.SetAnimation(move);
+
+        if (itemHandler.isUsing)
+        {
+            if (MouseRightAction.WasPressedThisFrame())
+            {
+                itemHandler.CancelUse();
+            }
+
+            return;
+        }
 
         //Launch
         if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())

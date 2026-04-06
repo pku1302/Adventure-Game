@@ -2,29 +2,28 @@ using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
-    private bool flag = false;
-    public int damage = 1;
+    public float damage = 5f;
+    private bool hasHit = false;
+    public StatusEffectData poisonData;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
-        if (controller != null && !flag)
+        if (hasHit) return;
+
+        if (collision.CompareTag("Player"))
         {
-            flag = true;
-            controller.ChangeHealth(damage * (-1));
+            var health = collision.GetComponent<PlayerHealth>();
+            var statusManager = collision.GetComponent<StatusEffectManager>();
+            if (health != null)
+            {
+                health.TakeDamage(damage);
+                hasHit = true;
+            }
+            if (statusManager != null)
+            {
+                statusManager.AddEffect(new PoisonDebuff(poisonData));
+            }
         }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void DestroySelf()

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, IPointerClickHandler
 {
     public List<InventorySlot> slots = new List<InventorySlot>();
 
@@ -21,7 +23,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i< slotCount + QuickSlotCount; i++)
+        for (int i = 0; i < slotCount + QuickSlotCount; i++)
         {
             slots.Add(new InventorySlot(null, 0));
         }
@@ -29,6 +31,20 @@ public class Inventory : MonoBehaviour
         UpdateUI();
         AddItem(testItem, 4);
         AddItem(testItem2, 2);
+    }
+
+    private void OnDisable()
+    {
+        TooltipUI.Instance.Hide();
+        ContextMenuUI.Instance.Hide();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            ContextMenuUI.Instance.Hide();
+        }
     }
 
     void CreateSlots()
@@ -51,7 +67,7 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemData item, int amount)
     {
-        foreach(var slot in slots)
+        foreach (var slot in slots)
         {
             // 같은 아이템은 카운트 증가
             if (slot.item == item)
@@ -62,7 +78,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        foreach(var slot in slots)
+        foreach (var slot in slots)
         {
             if (slot.item == null)
             {
@@ -78,7 +94,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < slotUIs.Count; i++)
         {
-             slotUIs[i].SetSlot(this, i, slots[i]); 
+            slotUIs[i].SetSlot(this, i, slots[i]);
         }
     }
 
@@ -112,12 +128,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UseItem(InventorySlot slot, int index)
+    public ItemData UseItem(InventorySlot slot, int index)
     {
-        if (slot.item == null) return;
+        if (slot.item == null) return null;
         if (slot.item is ConsumableItem consumable)
         {
-            consumable.Use();
             slot.count--;
             Debug.Log("아이템 사용됨");
 
@@ -130,6 +145,31 @@ public class Inventory : MonoBehaviour
         {
             Debug.Log("사용 불가");
         }
+        UpdateUI();
+
+        return slot.item;
+    }
+
+    public ItemData GetItem(int index)
+    {
+        return slots[index].item;
+    }
+
+    public void RemoveItem(int index, bool isDrop)
+    {
+        if (isDrop)
+        {
+            slots[index].item = null;
+            slots[index].count = 0;
+        }
+        else
+        {
+            slots[index].count -= 1;
+
+            if (slots[index].count == 0)
+                slots[index].item = null;
+        }
+
         UpdateUI();
     }
 }

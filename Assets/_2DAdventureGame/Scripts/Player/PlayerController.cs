@@ -6,20 +6,16 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public int maxHealth = 5;
     public float speed = 3.0f;
     public float dashSpeed = 6.0f;
 
     public GameObject projectilePrefab;
-    public int health { get { return currentHealth; } }
     public float timeInvincible = 2.0f;
 
-    private int currentHealth;
     private Rigidbody2D rigidbody2d;
-    private bool isInvincible;
     private bool isDashing = false;
     private bool isLooting = false;
-    private float damageCooldown;
+
     private Animator animator;
     private Vector2 moveDirection = new Vector2(1, 0);
     private AudioSource audioSource;
@@ -32,7 +28,6 @@ public class PlayerController : MonoBehaviour
     {
         player = this;
         rigidbody2d = GetComponent<Rigidbody2D>();
-        currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
@@ -47,14 +42,6 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
 
-        if (isInvincible)
-        {
-            damageCooldown -= Time.deltaTime;
-            if (damageCooldown < 0)
-            {
-                isInvincible = false;
-            }
-        }
     }
     private void FixedUpdate()
     {
@@ -124,20 +111,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Look X", mouseDirection.x);
         animator.SetFloat("Look Y", mouseDirection.y);
         animator.SetFloat("Speed", move.magnitude);
-    }
-
-    public void ChangeHealth(int amount)
-    {
-        if (amount < 0)
-        {
-            AudioClip clip = hitSFXs[Random.Range(0, hitSFXs.Length)];
-            audioSource.PlayOneShot(clip);
-            isInvincible = true;
-            damageCooldown = timeInvincible;
-            animator.SetTrigger("Hit");
-            StartCoroutine(HitShake(0.1f, 0.2f));
-        }
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
     }
 
     public void Launch()

@@ -2,9 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static Unity.VisualScripting.Member;
 
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IDragSource
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IDragSource, IPointerEnterHandler, IPointerExitHandler
 {
     public int index;
     public Image icon;
@@ -13,6 +12,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     private InventorySlot slot;
     private static InventorySlotUI selectedSlot;
+    private bool isHovering = false;
 
     private static bool isSplitMode;
     private static int splitAmount;
@@ -36,6 +36,23 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
             icon.sprite = null;
             countText.text = "";
         }
+    }
+
+    // 호버시 툴팁
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isHovering) return;
+
+        isHovering = true;
+
+        if (slot.item != null)
+            TooltipUI.Instance.Show(slot.item, transform.position);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovering = false;
+        TooltipUI.Instance.Hide();
     }
 
     // 드래그 시작
@@ -137,34 +154,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (slot.item == null)
+        if (slot.item != null && eventData.button == PointerEventData.InputButton.Right)
         {
-            return;
+            ContextMenuUI.Instance.Show(slot, transform.position, index);
         }
 
-        if (slot != null && slot.item != null)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Select();
+            ContextMenuUI.Instance.Hide();
         }
-
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            inventory.UseItem(slot, index);
-        }
-    }
-
-    void Select()
-    {
-        if (selectedSlot != null)
-        {
-            selectedSlot.Deselect();
-        }
-
-        selectedSlot = this;
-    }
-
-    void Deselect()
-    {
-        background.color = Color.white;
     }
 }
