@@ -6,5 +6,6 @@ public enum MonsterState
     Chase,
     Attack,
     Hit,
+    Stop,
     Dead
 }

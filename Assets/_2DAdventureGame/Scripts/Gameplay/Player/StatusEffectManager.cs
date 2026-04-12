@@ -10,15 +10,41 @@ public class StatusEffectManager : MonoBehaviour
     public Action<StatusEffect> OnEffectUpdated;
     public Action<StatusEffect> OnEffectActivated;
     public Action<HealBuff> OnHealEffectAdded;
-
     public Action<PoisonDebuff> OnPoisonDebuffAdded;
     public Action OnPoisonDebuffRemoved;
-
     public PlayerHealth health;
+
+    public bool isUsingItem;
+    public bool isExhausted;
+
     private List<StatusEffect> effects = new List<StatusEffect>();
+    private PlayerStamina stamina;
+    
     private void Awake()
     {
         health = GetComponent<PlayerHealth>();
+        stamina = GetComponent<PlayerStamina>();
+    }
+
+    private void Start()
+    {
+        stamina.OnExhausted += () => isExhausted = true;
+        stamina.OnNormal += () => isExhausted = false;
+    }
+
+    public float GetFinalSpeed(float baseSpeed)
+    {
+        float speed = baseSpeed;
+
+        if (isUsingItem)
+        {
+            speed *= 0.3f;
+        }
+        if (isExhausted)
+        {
+            speed *= 0.3f;
+        }
+        return speed;
     }
 
     private void Update()

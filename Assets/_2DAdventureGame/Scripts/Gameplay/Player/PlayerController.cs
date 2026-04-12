@@ -6,30 +6,36 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 3.0f;
-    public float dashSpeed = 6.0f;
-
     public GameObject projectilePrefab;
     public float timeInvincible = 2.0f;
 
     private Rigidbody2D rigidbody2d;
-    private bool isDashing = false;
+    private PlayerDash dash;
     private bool isLooting = false;
+    private float runningCost = 8.0f;
 
     private Animator animator;
     private Vector2 moveDirection = new Vector2(1, 0);
-    private AudioSource audioSource;
-    public AudioClip[] hitSFXs;
     private Vector2 mouseDirection;
+    private AudioSource audioSource;
+    private PlayerStats stats;
+    private StatusEffectManager statusEffectManager;
+    private PlayerStamina stamina;
 
     public static PlayerController player;
+    public InputManager inputManager;
 
     void Start()
     {
         player = this;
+        stats= GetComponent<PlayerStats>();
+        dash = GetComponent<PlayerDash>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        statusEffectManager = GetComponent<StatusEffectManager>();
+        stamina = GetComponent<PlayerStamina>();
+        dash.OnDashStart += () => animator.SetTrigger("Roll");
     }
 
     // Update is called once per frame
@@ -37,28 +43,25 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        if (!isDashing)
-            mouseDirection = worldPos - transform.position;
+        worldPos.z = 0f;
+        if (!dash.IsDashing)
+            mouseDirection = (Vector2)(worldPos - transform.position).normalized;
 
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
-
     }
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (dash.IsDashing)
         {
-            M_Roll();
+            Roll();
         }
     }
 
-    public void Roll(Vector2 move)
+    public void Roll()
     {
-        if (isDashing || isLooting)
-        {
-            return;
-        }
-        animator.SetTrigger("Roll");
-        isDashing = true;
+        float dashSpeed = dash.GetDashSpeed();
+        Vector2 position = (Vector2)rigidbody2d.position + mouseDirection * dashSpeed * Time.fixedDeltaTime;
+        rigidbody2d.MovePosition(position);
     }
 
     public void Loot()
@@ -71,26 +74,25 @@ public class PlayerController : MonoBehaviour
         isLooting = false;
     }
 
-    public void EndDash()
-    {
-        isDashing = false;
-    }
-
-    private void M_Roll()
-    {
-        Vector2 mDirection = mouseDirection.normalized;
-        isDashing = true;
-
-        Vector2 position = (Vector2)rigidbody2d.position + mDirection * dashSpeed * Time.fixedDeltaTime;
-        rigidbody2d.MovePosition(position);
-    }
-
     public void Move(Vector2 move)
     {
-        if (isDashing || isLooting)
+        if (dash.IsDashing || isLooting)
         {
             return;
         }
+        float speed = stats.baseMoveSpeed;
+
+        if (inputManager.IsRunning && 
+            !statusEffectManager.isUsingItem &&
+            !stamina.isExhausted() &&
+            move != Vector2.zero )
+        {
+            stamina.TryUseStamina(runningCost * Time.deltaTime);
+            speed *= 2.5f;
+
+        }
+
+        speed = statusEffectManager.GetFinalSpeed(speed);
 
         Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.fixedDeltaTime;
         rigidbody2d.MovePosition(position);
@@ -119,11 +121,6 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(mouseDirection, 300);
         animator.SetTrigger("Launch");
-    }
-
-    public void PlaySound(AudioClip clip)
-    {
-        audioSource.PlayOneShot(clip);
     }
 
     public IEnumerator HitShake(float duration, float magnitude)

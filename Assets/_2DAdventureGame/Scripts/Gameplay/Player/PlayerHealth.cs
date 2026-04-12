@@ -3,14 +3,21 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float maxHP = 100f;
+    public float maxHP;
     public float currentHP;
-
     public event Action<float, float> OnHPChanged;
+
+    private PlayerStats stats;
+
+    private void Awake()
+    {
+        stats = GetComponent<PlayerStats>();
+    }
 
     void Start()
     {
-        currentHP = maxHP;
+        currentHP = stats.maxHP;
+        maxHP = stats.maxHP;
         OnHPChanged?.Invoke(currentHP, maxHP);
     }
 

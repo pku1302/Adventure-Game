@@ -5,60 +5,49 @@ public class AttackState : IState
     public MonsterState MonsterState => MonsterState.Attack;
     private float attackCoolTime;
 
-    private AttackMonsterAIComponent ai;
+    private AIComponent ai;
+    private AttackComponent attackComponent;
     private Vector2 direction;
-    private bool canAttack = true;
 
-    public AttackState(AttackMonsterAIComponent ai)
+    public AttackState(AIComponent ai, AttackComponent attackComponent)
     {
         this.ai = ai;
+        this.attackComponent = attackComponent;
     }
 
     public void Enter()
     {
-        Attack();
-        ai.OnAttackEnd += HandleAttackEnd;
-        attackCoolTime = ai.Monster.Data.attackSpeed;
+        attackCoolTime = 0f;
     }
 
     public void Exit()
     {
-        ai.OnAttackEnd -= HandleAttackEnd;
-    }
-
-    void HandleAttackEnd()
-    {
-        canAttack = false;
     }
 
     void Attack()
     {
         direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
         ai.Animation.SetAttack(direction);
-        ai.Attack.direction = direction;
+        attackComponent.direction = direction;
     }
 
     public void FixedUpdate()
     {
-        ai.Movement.StopMonster();
-        if(!canAttack)
-        {
-            ai.Animation.SetStop(direction);
-        }
     }
 
     public void Update()
     {
-        if (!canAttack)
-        {
-            attackCoolTime -= Time.deltaTime;
-        }
+        ai.Movement.StopMonster();
 
         if (attackCoolTime <= 0f && ai.IsPlayerInAttackRange())
         {
             Attack();
             attackCoolTime = ai.Monster.Data.attackSpeed;
-            canAttack = true;
+        }
+        else
+        {
+            attackCoolTime -= Time.deltaTime;
+            ai.Animation.SetStop(direction);
         }
     }
 }

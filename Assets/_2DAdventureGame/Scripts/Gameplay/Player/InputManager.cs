@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    public PlayerController player;
     public GameObject inventoryUI;
     public GameObject radialMenu;
     public GameObject lootUI;
-    public PlayerItem itemHandler;
 
     private IInteractable currentHover; 
     private IInteractable lootComponent;
@@ -22,9 +20,19 @@ public class InputManager : MonoBehaviour
     public InputAction RadialMenuAction; // E
     public InputAction EscapeAction; // ESC
     public InputAction MouseRightAction; // Mouse Right
+    public InputAction RunAction; // Shift
     public bool IsInventoryOpen => inventoryUI.activeSelf;
-
+    public bool IsRunning  {get; private set; }
     private Vector2 move;
+
+    public PlayerItem itemHandler;
+    public PlayerController player;
+    public PlayerDash dash;
+    public FlashLightToggle flashLight;
+
+    private void Awake()
+    {
+    }
 
     private void Start()
     {
@@ -36,6 +44,9 @@ public class InputManager : MonoBehaviour
         InventoryAction.Enable();
         EscapeAction.Enable();
         RadialMenuAction.Enable();
+        RunAction.Enable();
+
+        IsRunning = false;
     }
 
     // Update is called once per frame
@@ -43,6 +54,16 @@ public class InputManager : MonoBehaviour
     {
         // ----- Player Control -------
         move = MoveAction.ReadValue<Vector2>();
+
+        if (RunAction.IsPressed())
+        {
+            IsRunning = true;
+        }
+
+        if (RunAction.WasReleasedThisFrame())
+        {
+            IsRunning = false;
+        }
 
         player.SetAnimation(move);
 
@@ -55,6 +76,13 @@ public class InputManager : MonoBehaviour
 
             return;
         }
+        else
+        {
+            if (MouseRightAction.WasPressedThisFrame())
+            {
+                flashLight.ToggleFlashlight();
+            }
+        }
 
         //Launch
         if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())
@@ -65,7 +93,7 @@ public class InputManager : MonoBehaviour
         // Roll
         if (RollAction.WasPressedThisFrame())
         {
-            player.Roll(move);
+            dash.TryDash();
         }
 
         // ----- UI -----
@@ -106,7 +134,6 @@ public class InputManager : MonoBehaviour
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
 
         IInteractable newHover = null;

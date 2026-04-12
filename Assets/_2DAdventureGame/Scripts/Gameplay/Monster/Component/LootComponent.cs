@@ -11,7 +11,7 @@ public class LootComponent : MonoBehaviour, IInteractable
 
     private SpriteRenderer spriteRenderer;
     private float interactDistance = 1f;
-    private AttackMonsterAIComponent ai;
+    private AIComponent ai;
 
     public void OnHoverExit()
     {
@@ -27,7 +27,7 @@ public class LootComponent : MonoBehaviour, IInteractable
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        ai = GetComponent<AttackMonsterAIComponent>();
+        ai = GetComponent<AIComponent>();
     }
 
     // Update is called once per frame

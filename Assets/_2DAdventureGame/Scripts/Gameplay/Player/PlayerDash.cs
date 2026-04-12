@@ -1,40 +1,41 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
-    Rigidbody2D rb;
-    public float dashSpeed = 12f;
-    public float dashTime = 0.2f;
-    public float dashCooldown = 2f;
+    public bool IsDashing { get; private set; }
+    public Vector2 DashDirection { get; private set; }
+    public float dashCost = 10f;
 
-    bool isDashing;
-    bool canDash = true;
+    private float dashSpeed = 6.0f;
+    private PlayerStamina stamina;
+    public event Action OnDashStart;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        IsDashing = false;
+        stamina = GetComponent<PlayerStamina>();
     }
 
-    public void Roll(Vector2 direction)
+    public float GetDashSpeed()
     {
-        if (!isDashing && canDash)
-            StartCoroutine(Dash(direction));
+        return dashSpeed;
     }
 
-    IEnumerator Dash(Vector2 direction)
+    public void TryDash()
     {
-        isDashing = true;
+        if (IsDashing) return;
 
-        rb.linearVelocity = direction * dashSpeed;
+        if (stamina.TryUseStamina(dashCost))
+        {
+            IsDashing = true;
+            OnDashStart?.Invoke();
+        }
+    }
 
-        yield return new WaitForSeconds(dashTime);
-
-        isDashing = false;
-        canDash = false;
-
-        yield return new WaitForSeconds(dashCooldown);
-
-        canDash = true;
+    public void EndDash()
+    {
+        IsDashing = false;
     }
 }

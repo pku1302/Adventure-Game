@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public abstract class AIComponent : MonoBehaviour
 {
@@ -7,10 +8,15 @@ public abstract class AIComponent : MonoBehaviour
     public HealthComponent Health { get; private set; }
     public HitComponent Hit { get; private set; }
     public LootComponent Loot { get; private set; }
-
+    public event Action OnAttackEnd;
     public LootTable lootTable;
-
+    public Monster Monster { get; protected set; }
     protected StateMachine stateMachine;
+
+    public void OnAttackEndEvent()
+    {
+        OnAttackEnd?.Invoke();
+    }
 
     protected void Init()
     {
@@ -45,4 +51,10 @@ public abstract class AIComponent : MonoBehaviour
         loot.lootItems = lootTable.GenerateLoot();
     }
 
+    public bool IsPlayerInAttackRange()
+    {
+        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
+
+        return playerDistance <= Monster.Data.attackRange;
+    }
 }

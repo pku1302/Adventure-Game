@@ -8,13 +8,16 @@ public class HPBar : MonoBehaviour
     public Image healHPBar;
     public Image poisonLine;
     public TMP_Text CurrentHP;
+    public PlayerStats playerStats;
 
     private Color backupColor;
     private HealBuff currentBuff;
     private PoisonDebuff currentPoisonDebuff;
+    private float maxHP;
 
     private void Start()
     {
+        maxHP = playerStats.maxHP;
         backupColor = currentHPBar.color;
         poisonLine.gameObject.SetActive(false);
     }
@@ -36,7 +39,7 @@ public class HPBar : MonoBehaviour
     public void UpdateGenerationHP(HealBuff effect)
     {
         currentBuff = effect;
-        healHPBar.fillAmount = Mathf.Min(currentHPBar.fillAmount + currentBuff.GetCurrentHealAmount() / 100f, 1);
+        healHPBar.fillAmount = Mathf.Min(currentHPBar.fillAmount + currentBuff.GetCurrentHealAmount() / maxHP, 1);
     }
 
     public void RemoveGenerationHP(HealBuff effect)
@@ -58,7 +61,7 @@ public class HPBar : MonoBehaviour
         poisonLine.gameObject.SetActive(true);
         currentPoisonDebuff = effect;
         float width = currentHPBar.rectTransform.rect.width;
-        float x = (1f- (effect.GetCurrentPoisonAmount() / 100f + (1 - currentHPBar.fillAmount))) * width;
+        float x = (1f- (effect.GetCurrentPoisonAmount() / maxHP + (1 - currentHPBar.fillAmount))) * width;
         poisonLine.rectTransform.anchoredPosition = new Vector2(x, 0f);
 
         if (x <= 0)

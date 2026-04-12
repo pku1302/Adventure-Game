@@ -4,10 +4,10 @@ public class HitState : IState
 {
     public MonsterState MonsterState => MonsterState.Hit;
 
-    private AttackMonsterAIComponent ai;
+    private AIComponent ai;
     private Vector2 direction;
 
-    public HitState(AttackMonsterAIComponent ai, Vector2 direction)
+    public HitState(AIComponent ai, Vector2 direction)
     {
         this.ai = ai;
         this.direction = direction;
@@ -25,10 +25,10 @@ public class HitState : IState
 
     public void FixedUpdate()
     {
-        ai.Movement.StopMonster();
     }
 
     public void Update()
     {
+        ai.Movement.StopMonster();
     }
 }

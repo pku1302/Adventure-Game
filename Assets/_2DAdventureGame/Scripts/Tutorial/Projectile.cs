@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        AttackMonsterAIComponent enemy = collision.GetComponent<AttackMonsterAIComponent>();
+        AIComponent enemy = collision.GetComponent<AIComponent>();
 
         if (enemy != null)
         {

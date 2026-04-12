@@ -1,18 +1,15 @@
 using UnityEngine;
 using System;
 
-public class AttackMonsterAIComponent : AIComponent
+public class StarAIComponent : AIComponent
 {
     private float stateChangeTimer;
-    public float detectRange = 5f;
-    public AttackComponent Attack;
-    public event Action OnAttackEnd;
-    public Monster Monster;
+    private int currentAngry = 0;
+    private int currentStop = 0;
+    public const int AngryGage = 10;
+    public const int StopGage = 1;
 
-    public void OnAttackEndEvent()
-    {
-        OnAttackEnd?.Invoke();
-    }
+    public AttackComponent Attack { get; private set; }
 
     public void OnHitEnd()
     {
@@ -31,8 +28,8 @@ public class AttackMonsterAIComponent : AIComponent
     void Start()
     {
         Monster = GetComponent<Monster>();
-        stateMachine.Initialize(new WanderState(this));
         Attack = GetComponent<AttackComponent>();
+        stateMachine.Initialize(new WanderState(this));
         stateChangeTimer = Monster.Data.attackSpeed;
     }
 
@@ -56,12 +53,14 @@ public class AttackMonsterAIComponent : AIComponent
     void HandleHit(Vector2 direction)
     {
         stateMachine.ChangeState(new HitState(this, direction));
+        currentAngry = AngryGage;
     }
 
     void Think()
     {
         if (TryDead()) return;
         if (TryAttack()) return;
+        if (TryStop()) return;
         if (TryChase()) return;
 
         TryWander();
@@ -80,23 +79,53 @@ public class AttackMonsterAIComponent : AIComponent
 
     bool TryAttack()
     {
-        if(IsPlayerInAttackRange())
+        if (IsPlayerInAttackRange())
         {
-            stateMachine.ChangeState(new AttackState(this));
+            stateMachine.ChangeState(new AttackState(this, Attack));
             return true;
         }
 
         return false;
     }
 
+    bool TryStop()
+    {
+        if (currentStop <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            stateMachine.ChangeState(new StopState(this));
+            currentStop -= 1;
+            return true;
+        }
+    }
+
     bool TryChase()
     {
         float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (playerDistance <= detectRange)
+        if (playerDistance <= Monster.Data.detectRange)
         {
             stateMachine.ChangeState(new ChaseState(this));
+            currentAngry = AngryGage;
             return true;
         }
+
+        // 거리가 감지 밖이고 화난 상태라면
+        if (currentAngry > 0)
+        {
+            stateMachine.ChangeState(new ChaseState(this));
+            currentAngry -= 1;
+
+            if (currentAngry == 0)
+            {
+                stateMachine.ChangeState(new StopState(this));
+                currentStop = StopGage;
+            }
+            return true;
+        }
+
         return false;
     }
 
@@ -104,12 +133,5 @@ public class AttackMonsterAIComponent : AIComponent
     {
         stateMachine.ChangeState(new WanderState(this));
         return true;
-    }
-
-    public bool IsPlayerInAttackRange()
-    {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-
-        return playerDistance <= Monster.Data.attackRange;
     }
 }
