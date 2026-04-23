@@ -19,9 +19,11 @@ public class StatusEffectManager : MonoBehaviour
 
     private List<StatusEffect> effects = new List<StatusEffect>();
     private PlayerStamina stamina;
+    public PlayerController player;
     
     private void Awake()
     {
+        player = GetComponent<PlayerController>();
         health = GetComponent<PlayerHealth>();
         stamina = GetComponent<PlayerStamina>();
     }

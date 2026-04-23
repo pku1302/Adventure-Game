@@ -3,11 +3,8 @@ using UnityEngine;
 public class AttackState : IState
 {
     public MonsterState MonsterState => MonsterState.Attack;
-    private float attackCoolTime;
-
     private AIComponent ai;
     private AttackComponent attackComponent;
-    private Vector2 direction;
 
     public AttackState(AIComponent ai, AttackComponent attackComponent)
     {
@@ -17,18 +14,13 @@ public class AttackState : IState
 
     public void Enter()
     {
-        attackCoolTime = 0f;
+        Vector2 dir = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        attackComponent.SetAttackStart(dir);
     }
 
     public void Exit()
     {
-    }
-
-    void Attack()
-    {
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
-        ai.Animation.SetAttack(direction);
-        attackComponent.direction = direction;
+        attackComponent.AttackEnd();
     }
 
     public void FixedUpdate()
@@ -37,17 +29,6 @@ public class AttackState : IState
 
     public void Update()
     {
-        ai.Movement.StopMonster();
-
-        if (attackCoolTime <= 0f && ai.IsPlayerInAttackRange())
-        {
-            Attack();
-            attackCoolTime = ai.Monster.Data.attackSpeed;
-        }
-        else
-        {
-            attackCoolTime -= Time.deltaTime;
-            ai.Animation.SetStop(direction);
-        }
+        attackComponent.Attack();
     }
 }

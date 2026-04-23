@@ -12,18 +12,19 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidbody2d;
     private PlayerDash dash;
     private bool isLooting = false;
+    private bool isKnockback = false;
     private float runningCost = 8.0f;
 
     private Animator animator;
     private Vector2 moveDirection = new Vector2(1, 0);
     private Vector2 mouseDirection;
-    private AudioSource audioSource;
     private PlayerStats stats;
     private StatusEffectManager statusEffectManager;
     private PlayerStamina stamina;
 
     public static PlayerController player;
     public InputManager inputManager;
+    public bool IsSnared {  get; private set; }
 
     void Start()
     {
@@ -32,7 +33,6 @@ public class PlayerController : MonoBehaviour
         dash = GetComponent<PlayerDash>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
         statusEffectManager = GetComponent<StatusEffectManager>();
         stamina = GetComponent<PlayerStamina>();
         dash.OnDashStart += () => animator.SetTrigger("Roll");
@@ -74,9 +74,14 @@ public class PlayerController : MonoBehaviour
         isLooting = false;
     }
 
+    public void ToggleSnare()
+    {
+        IsSnared = !IsSnared;
+    }
+
     public void Move(Vector2 move)
     {
-        if (dash.IsDashing || isLooting)
+        if (dash.IsDashing || isLooting || isKnockback || IsSnared)
         {
             return;
         }
@@ -140,5 +145,24 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.localPosition = originalPos;
+    }
+
+    public void ApplyKnockback(Vector2 dir, float force, float duration)
+    {
+        StartCoroutine(Knockback(dir, force, duration));
+    }
+
+    IEnumerator Knockback(Vector2 dir, float force, float duration)
+    {
+        isKnockback = true;
+
+        rigidbody2d.linearVelocity = Vector2.zero;
+        rigidbody2d.AddForce(dir * force, ForceMode2D.Impulse);
+        if (dash.IsDashing)
+            dash.EndDash();
+
+        yield return new WaitForSeconds(duration);
+
+        isKnockback = false;
     }
 }

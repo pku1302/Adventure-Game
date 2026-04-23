@@ -13,8 +13,10 @@ public class StateMachine
 
     public void ChangeState(IState newState)
     {
-        if (currentState.MonsterState == newState.MonsterState) return;
-
+        if (currentState.MonsterState == newState.MonsterState)
+        {
+            return;
+        }
         currentState.Exit();
         currentState = newState;
         currentState.Enter();

@@ -4,6 +4,7 @@ using UnityEngine.Rendering.Universal;
 public class FlashLightToggle : MonoBehaviour
 {
     public Light2D flashlight;
+    public Collider2D hitbox;
 
     public float maxBattery = 100f;
     public float battery;
@@ -13,6 +14,7 @@ public class FlashLightToggle : MonoBehaviour
     {
         battery = maxBattery;
         flashlight.enabled = false;
+        hitbox.enabled = false;
     }
 
     private void Update()
@@ -34,6 +36,7 @@ public class FlashLightToggle : MonoBehaviour
         if (battery > 0)
         {
             flashlight.enabled = !flashlight.enabled;
+            hitbox.enabled = !hitbox.enabled;
         }
     }
 

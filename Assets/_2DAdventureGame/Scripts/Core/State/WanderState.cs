@@ -59,7 +59,7 @@ public class WanderState : IState
         }
         else if(isWalking)
         {
-            ai.Movement.Move(targetPosition);
+            ai.Movement.Move(targetPosition, ai.Monster.Data.moveSpeed);
             ai.Animation.SetMove(direction);
         }
 

@@ -29,9 +29,18 @@ public class Projectile : MonoBehaviour
     {
         AIComponent enemy = collision.GetComponent<AIComponent>();
 
+
         if (enemy != null)
         {
-            enemy.Health.TakeDamage(10, m_direction * (-1));
+            if (enemy is JiangshiAIComponent jiangshi && jiangshi.guardStack > 0)
+            {
+                jiangshi.guardStack -= 1;
+                jiangshi.Health.TakeDamage(0, true);
+            }
+            else
+            {
+                enemy.Health.TakeDamage(10, false);
+            }
         }
         Destroy(gameObject);
     }

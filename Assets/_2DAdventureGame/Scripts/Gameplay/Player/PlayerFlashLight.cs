@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 public class PlayerFlashLight : MonoBehaviour
 {
     public Transform lightTransform;
-
     void Update()
     {
         Vector3 mousePos = Mouse.current.position.ReadValue();

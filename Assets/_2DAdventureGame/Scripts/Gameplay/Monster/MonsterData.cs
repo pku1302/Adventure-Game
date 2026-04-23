@@ -9,4 +9,5 @@ public class MonsterData : ScriptableObject
     public float attackRange;
     public float attackSpeed;
     public float detectRange;
+    public float attackDamage;
 }

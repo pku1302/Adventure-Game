@@ -3,7 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class AnimationComponent : MonoBehaviour
 {
+    [HideInInspector]
     public Animator animator;
+    [HideInInspector]
     public Vector2 lastDirection;
 
     private bool isDead = false;
@@ -69,11 +71,16 @@ public class AnimationComponent : MonoBehaviour
         animator.SetFloat("Move Y", direction.y);
     }
 
-    public void SetHit(Vector2 direction)
+    public void SetGuard(Vector2 direction)
     {
-        animator.SetTrigger("Hit");
+        animator.SetTrigger("Guard");
         animator.SetFloat("Move X", direction.x);
         animator.SetFloat("Move Y", direction.y);
+    }
+
+    public void SetHit()
+    {
+        animator.SetTrigger("Hit");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

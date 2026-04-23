@@ -6,43 +6,45 @@ public class StarAIComponent : AIComponent
     private float stateChangeTimer;
     private int currentAngry = 0;
     private int currentStop = 0;
+    private AttackState attackState;
+
     public const int AngryGage = 10;
     public const int StopGage = 1;
 
-    public AttackComponent Attack { get; private set; }
-
-    public void OnHitEnd()
-    {
-        if (stateMachine.CurrentState.MonsterState == MonsterState.Dead)
-            return;
-
-        stateMachine.ChangeState(new ChaseState(this));
-    }
+    public StarAttackComponent Attack { get; private set; }
 
     void Awake()
     {
+        Monster = GetComponent<Monster>();
+        Attack = GetComponent<StarAttackComponent>();
         Init();
-        Health.OnHit += HandleHit;
+        attackState = new AttackState(this, Attack);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Monster = GetComponent<Monster>();
-        Attack = GetComponent<AttackComponent>();
-        stateMachine.Initialize(new WanderState(this));
-        stateChangeTimer = Monster.Data.attackSpeed;
+        stateMachine.Initialize(wanderState);
+        Health.OnHit += HandleHit;
+        stateChangeTimer = 0.1f;
     }
 
     // Update is called once per frame
     void Update()
     {
         stateMachine.Update();
-        if (stateChangeTimer <= 0f)
+        if (!Attack.isAttacking && stateChangeTimer <= 0f)
         {
+            stateChangeTimer = 0.1f;
             Think();
-            stateChangeTimer = Monster.Data.attackSpeed;
         }
         stateChangeTimer -= Time.deltaTime;
+    }
+
+    public void OnHitEnd()
+    {
+        if (stateMachine.CurrentState.MonsterState == MonsterState.Dead)
+            return;
+        stateMachine.ChangeState(stopState);
     }
 
     private void FixedUpdate()
@@ -50,9 +52,11 @@ public class StarAIComponent : AIComponent
         stateMachine.FixedUpdate();
     }
 
-    void HandleHit(Vector2 direction)
+
+    void HandleHit()
     {
-        stateMachine.ChangeState(new HitState(this, direction));
+        stateMachine.ChangeState(hitState);
+        stateChangeTimer = Monster.Data.attackSpeed / 4;
         currentAngry = AngryGage;
     }
 
@@ -81,7 +85,7 @@ public class StarAIComponent : AIComponent
     {
         if (IsPlayerInAttackRange())
         {
-            stateMachine.ChangeState(new AttackState(this, Attack));
+            stateMachine.ChangeState(attackState);
             return true;
         }
 
@@ -96,7 +100,7 @@ public class StarAIComponent : AIComponent
         }
         else
         {
-            stateMachine.ChangeState(new StopState(this));
+            stateMachine.ChangeState(stopState);
             currentStop -= 1;
             return true;
         }
@@ -107,7 +111,7 @@ public class StarAIComponent : AIComponent
         float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
         if (playerDistance <= Monster.Data.detectRange)
         {
-            stateMachine.ChangeState(new ChaseState(this));
+            stateMachine.ChangeState(chaseState);
             currentAngry = AngryGage;
             return true;
         }
@@ -115,12 +119,12 @@ public class StarAIComponent : AIComponent
         // 거리가 감지 밖이고 화난 상태라면
         if (currentAngry > 0)
         {
-            stateMachine.ChangeState(new ChaseState(this));
+            stateMachine.ChangeState(chaseState);
             currentAngry -= 1;
 
             if (currentAngry == 0)
             {
-                stateMachine.ChangeState(new StopState(this));
+                stateMachine.ChangeState(stopState);
                 currentStop = StopGage;
             }
             return true;
@@ -131,7 +135,7 @@ public class StarAIComponent : AIComponent
 
     bool TryWander()
     {
-        stateMachine.ChangeState(new WanderState(this));
+        stateMachine.ChangeState(wanderState);
         return true;
     }
 }

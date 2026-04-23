@@ -7,7 +7,6 @@ public class MovementComponent : MonoBehaviour
     [SerializeField]
     private LayerMask wallLayer;
     private AnimationComponent animationComponent;
-    public float currentMoveSpeed;
 
     private Vector2 avoidDir;
     private float avoidTimer = 0f;
@@ -18,7 +17,6 @@ public class MovementComponent : MonoBehaviour
         monster = GetComponent<Monster>();
         rb = GetComponent<Rigidbody2D>();
         animationComponent = GetComponent<AnimationComponent>();
-        currentMoveSpeed = monster.Data.moveSpeed;
     }
 
     // 슬로우 디버프까지 계산한 총 이속을 리턴할 것임
@@ -32,14 +30,14 @@ public class MovementComponent : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
     }
 
-    public bool Move(Transform target)
+    public bool Move(Transform target, float speed)
     {
         if (target == null) return false;
 
-        return Move((Vector2)target.position);
+        return Move((Vector2)target.position, speed);
     }
 
-    public bool Move(Vector2 target)
+    public bool Move(Vector2 target, float speed)
     {
         Vector2 currentPosition = rb.position;
         Vector2 direction = (target - currentPosition).normalized;
@@ -47,7 +45,7 @@ public class MovementComponent : MonoBehaviour
         if (avoidTimer > 0)
         {
             avoidTimer -= Time.fixedDeltaTime;
-            rb.linearVelocity = avoidDir * currentMoveSpeed;
+            rb.linearVelocity = avoidDir * speed;
             return true;
         }
 
@@ -59,8 +57,14 @@ public class MovementComponent : MonoBehaviour
             avoidTimer = avoidTime;
             direction = avoidDir;
         }
-        rb.linearVelocity = direction * currentMoveSpeed;
+        rb.linearVelocity = direction * speed;
 
         return true;
     }
+
+    public void Rush(Vector2 direction)
+    {
+        rb.linearVelocity = direction;
+    }
+
 }

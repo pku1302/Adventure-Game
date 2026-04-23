@@ -5,6 +5,7 @@ public class StopState : IState
     public MonsterState MonsterState => MonsterState.Stop;
     private AIComponent ai;
     private Vector2 direction;
+    private float directionTimer;
 
     public StopState(AIComponent ai)
     {
@@ -16,6 +17,7 @@ public class StopState : IState
         direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
         ai.Movement.StopMonster();
         ai.Animation.SetStop(direction);
+        directionTimer = 1f;
     }
 
     public void Exit()
@@ -28,5 +30,11 @@ public class StopState : IState
 
     public void Update()
     {
+        directionTimer -= Time.deltaTime;
+        if (directionTimer <= 0f)
+        {
+            direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+            ai.Animation.SetStop(direction);
+        }
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1025070b80dd31e4bbf847519c5afe24, type: 3}
+  m_Name: Snare Data
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectData
+  effectID: snare
+  icon: {fileID: -8324576963626738183, guid: 10405542cd0ecbc4ba4b6c80f213b15c, type: 3}
+  displayName: "\uC18D\uBC15"
+  maxStack: 1
+  duration: 2
+  isDebuff: 1
+  color: {r: 0, g: 0, b: 0, a: 0}

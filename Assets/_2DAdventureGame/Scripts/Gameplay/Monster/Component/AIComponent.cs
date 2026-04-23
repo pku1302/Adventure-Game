@@ -8,15 +8,17 @@ public abstract class AIComponent : MonoBehaviour
     public HealthComponent Health { get; private set; }
     public HitComponent Hit { get; private set; }
     public LootComponent Loot { get; private set; }
-    public event Action OnAttackEnd;
+    [HideInInspector]
     public LootTable lootTable;
     public Monster Monster { get; protected set; }
     protected StateMachine stateMachine;
 
-    public void OnAttackEndEvent()
-    {
-        OnAttackEnd?.Invoke();
-    }
+    protected IState chaseState;
+    protected IState stopState;
+    protected IState deadState;
+    protected IState wanderState;
+    protected IState hitState;
+
 
     protected void Init()
     {
@@ -26,6 +28,11 @@ public abstract class AIComponent : MonoBehaviour
         Hit = GetComponent<HitComponent>();
         Loot = GetComponent<LootComponent>();
 
+        chaseState = new ChaseState(this);
+        stopState = new StopState(this);
+        deadState = new DeadState(this);
+        wanderState = new WanderState(this);
+        hitState = new HitState(this);
         stateMachine = new StateMachine();
 
         if (Health != null)

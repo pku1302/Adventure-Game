@@ -7,5 +7,7 @@ public enum MonsterState
     Attack,
     Hit,
     Stop,
+    Berserk,
+    Guard,
     Dead
 }

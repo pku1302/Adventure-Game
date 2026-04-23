@@ -25,7 +25,7 @@ public class PlayerDash : MonoBehaviour
 
     public void TryDash()
     {
-        if (IsDashing) return;
+        if (IsDashing || PlayerController.player.IsSnared) return;
 
         if (stamina.TryUseStamina(dashCost))
         {

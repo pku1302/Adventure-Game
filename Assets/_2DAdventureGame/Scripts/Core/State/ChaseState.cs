@@ -7,8 +7,8 @@ public class ChaseState : IState
     private AIComponent ai;
     private Vector2 direction;
     private Vector2 playerRandomPosition;
-    private float locateTimer = 0f;
-    private float locateTime = 1f;
+    private float animationTimer = 0f;
+    private float AnimateTime = 0.2f;
     private float detectRange;
     private float attackRange;
     public ChaseState(AIComponent ai)
@@ -19,7 +19,10 @@ public class ChaseState : IState
     }
     public void Enter()
     {
-
+        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        playerRandomPosition = (Vector2)PlayerController.player.transform.position;
+        ai.Animation.SetMove(direction);
+        animationTimer = AnimateTime;
     }
 
     public void Exit()
@@ -28,20 +31,23 @@ public class ChaseState : IState
 
     public void FixedUpdate()
     {
-        float distance = Vector2.Distance(ai.transform.position, PlayerController.player.transform.position);
-        direction = (playerRandomPosition - (Vector2)ai.transform.position).normalized;
 
-        ai.Movement.Move(playerRandomPosition);
-        ai.Animation.SetMove(direction);
     }
 
     public void Update()
     {
-        if (locateTimer <= 0f)
+        if (animationTimer <= 0f)
         {
-            playerRandomPosition = (Vector2)PlayerController.player.transform.position + Random.insideUnitCircle * attackRange;
-            locateTimer = locateTime;
+            direction = (playerRandomPosition - (Vector2)ai.transform.position).normalized;
+            playerRandomPosition = (Vector2)PlayerController.player.transform.position;
+            animationTimer = AnimateTime;
+            ai.Animation.SetMove(direction);
         }
-        locateTimer -= Time.deltaTime;
+        else
+        {
+            animationTimer -= Time.deltaTime;
+        }
+        //playerRandomPosition = (Vector2)PlayerController.player.transform.position + Random.insideUnitCircle * attackRange;
+        ai.Movement.Move(playerRandomPosition, ai.Monster.Data.moveSpeed);
     }
 }

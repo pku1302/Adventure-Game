@@ -10,8 +10,9 @@ public class HealthComponent : MonoBehaviour
     public int MaxHp { get; private set; }
     public bool IsDead => CurrentHp <= 0;
 
-    public event Action<Vector2> OnHit;
+    public event Action OnHit;
     public event Action OnDeath;
+    public event Action OnGuard;
 
     private void Awake()
     {
@@ -21,12 +22,18 @@ public class HealthComponent : MonoBehaviour
         CurrentHp = MaxHp;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void TakeDamage(int amount, Vector2 direction)
+    public void TakeDamage(int amount, bool isBlocked)
     {
         if (IsDead) return;
 
+        if (isBlocked)
+        {
+            OnGuard?.Invoke();
+            return;
+        }
+
         CurrentHp -= amount;
-        OnHit?.Invoke(direction);
+        OnHit?.Invoke();
 
         if (CurrentHp <= 0)
         {

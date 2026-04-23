@@ -1,0 +1,598 @@
+fileFormatVersion: 2
+guid: 9b0b97687dc0ad34baa84c007573659e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1523854302352897346
+    second: Ghost_Attack_RightUp_0
+  - first:
+      213: -7188606042535097946
+    second: Ghost_Attack_RightUp_1
+  - first:
+      213: -350418761688450078
+    second: Ghost_Attack_RightUp_2
+  - first:
+      213: -4337686906621123152
+    second: Ghost_Attack_RightUp_3
+  - first:
+      213: 4827731661013166564
+    second: Ghost_Attack_RightUp_4
+  - first:
+      213: -7050887240645668611
+    second: Ghost_Attack_RightUp_5
+  - first:
+      213: 937343296262002155
+    second: Ghost_Attack_RightUp_6
+  - first:
+      213: 6232672883061570230
+    second: Ghost_Attack_RightUp_7
+  - first:
+      213: -3080047587226805610
+    second: Ghost_Attack_RightUp_8
+  - first:
+      213: -8819572690313901752
+    second: Ghost_Attack_RightUp_9
+  - first:
+      213: 5525048280509309940
+    second: Ghost_Attack_RightUp_10
+  - first:
+      213: -4764333611520272327
+    second: Ghost_Attack_RightUp_11
+  - first:
+      213: 2138553498377504426
+    second: Ghost_Attack_RightUp_12
+  - first:
+      213: -1739642521364440900
+    second: Ghost_Attack_RightUp_13
+  - first:
+      213: 1184450470302072402
+    second: Ghost_Attack_RightUp_14
+  - first:
+      213: 2106221135681465813
+    second: Ghost_Attack_RightUp_15
+  - first:
+      213: 7598087255145287261
+    second: Ghost_Attack_RightUp_16
+  - first:
+      213: 7435763307904665202
+    second: Ghost_Attack_RightUp_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_8
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 388
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 245f13d0a61d52510800000000000000
+      internalID: 1523854302352897346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_7
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 384
+        width: 108
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a9087424e0fc3c90800000000000000
+      internalID: -7188606042535097946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_6
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 380
+        width: 100
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eb7dea2eff032bf0800000000000000
+      internalID: -350418761688450078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_5
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 381
+        width: 122
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b52cff8db07dc3c0800000000000000
+      internalID: -4337686906621123152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_4
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 395
+        width: 124
+        height: 124
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e9a8950e5c8ff240800000000000000
+      internalID: 4827731661013166564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_3
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 400
+        width: 110
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df01bfd6967362e90800000000000000
+      internalID: -7050887240645668611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_2
+      rect:
+        serializedVersion: 2
+        x: 789
+        y: 400
+        width: 98
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be55a4ef2cc120d00800000000000000
+      internalID: 937343296262002155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_1
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 400
+        width: 88
+        height: 162
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ba381c07f6ee7650800000000000000
+      internalID: 6232672883061570230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_0
+      rect:
+        serializedVersion: 2
+        x: 1001
+        y: 400
+        width: 80
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69a1c08c9097145d0800000000000000
+      internalID: -3080047587226805610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_16
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 195
+        width: 94
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8498a13cd559a9580800000000000000
+      internalID: -8819572690313901752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_15
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 195
+        width: 106
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3e3ae532aecac40800000000000000
+      internalID: 5525048280509309940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_14
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 194
+        width: 110
+        height: 152
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93851e5a2dfa1edb0800000000000000
+      internalID: -4764333611520272327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_13
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 194
+        width: 118
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa6c5f3831badad10800000000000000
+      internalID: 2138553498377504426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_12
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 194
+        width: 128
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb858e5085c8bd7e0800000000000000
+      internalID: -1739642521364440900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_11
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 194
+        width: 138
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25e36606d63007010800000000000000
+      internalID: 1184450470302072402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_10
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 193
+        width: 120
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dda6b2b6fcca3d10800000000000000
+      internalID: 2106221135681465813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_9
+      rect:
+        serializedVersion: 2
+        x: 966
+        y: 194
+        width: 126
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5e8b572a14d17960800000000000000
+      internalID: 7598087255145287261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ghost_Attack_RightUp_17
+      rect:
+        serializedVersion: 2
+        x: 985
+        y: 5
+        width: 94
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2768a890553213760800000000000000
+      internalID: 7435763307904665202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 918585eb52301994e97405ab01b529b1
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Ghost_Attack_RightUp_0: -3080047587226805610
+      Ghost_Attack_RightUp_1: 6232672883061570230
+      Ghost_Attack_RightUp_10: 2106221135681465813
+      Ghost_Attack_RightUp_11: 1184450470302072402
+      Ghost_Attack_RightUp_12: -1739642521364440900
+      Ghost_Attack_RightUp_13: 2138553498377504426
+      Ghost_Attack_RightUp_14: -4764333611520272327
+      Ghost_Attack_RightUp_15: 5525048280509309940
+      Ghost_Attack_RightUp_16: -8819572690313901752
+      Ghost_Attack_RightUp_17: 7435763307904665202
+      Ghost_Attack_RightUp_2: 937343296262002155
+      Ghost_Attack_RightUp_3: -7050887240645668611
+      Ghost_Attack_RightUp_4: 4827731661013166564
+      Ghost_Attack_RightUp_5: -4337686906621123152
+      Ghost_Attack_RightUp_6: -350418761688450078
+      Ghost_Attack_RightUp_7: -7188606042535097946
+      Ghost_Attack_RightUp_8: 1523854302352897346
+      Ghost_Attack_RightUp_9: 7598087255145287261
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
