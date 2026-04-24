@@ -35,10 +35,10 @@ public class StarAttackComponent : AttackComponent
 
     public override void Attack()
     {
-        if (slashCooldown <= 0f)
+        if (slashCooldown <= 0f && ai.target != null)
         {
             isAttacking = true;
-            direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+            direction = (ai.target.position - ai.transform.position).normalized;
             ai.Animation.SetAttack(direction);
             slashCooldown = ai.Monster.Data.attackSpeed;
         }

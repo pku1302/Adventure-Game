@@ -14,7 +14,7 @@ public class AttackState : IState
 
     public void Enter()
     {
-        Vector2 dir = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        Vector2 dir = (ai.target.position - ai.transform.position).normalized;
         attackComponent.SetAttackStart(dir);
     }
 

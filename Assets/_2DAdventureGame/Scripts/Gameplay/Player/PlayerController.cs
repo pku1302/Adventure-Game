@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,13 +23,11 @@ public class PlayerController : MonoBehaviour
     private StatusEffectManager statusEffectManager;
     private PlayerStamina stamina;
 
-    public static PlayerController player;
     public InputManager inputManager;
     public bool IsSnared {  get; private set; }
 
     void Start()
     {
-        player = this;
         stats= GetComponent<PlayerStats>();
         dash = GetComponent<PlayerDash>();
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -48,6 +47,17 @@ public class PlayerController : MonoBehaviour
             mouseDirection = (Vector2)(worldPos - transform.position).normalized;
 
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
+        SetAnimation();
+
+        if (InputManager.Instance.WasLaunchActionPressed)
+        {
+            Launch();
+        }
+
+        if (InputManager.Instance.WasRollActionPressed)
+        {
+            dash.TryDash();
+        }
     }
     private void FixedUpdate()
     {
@@ -55,6 +65,7 @@ public class PlayerController : MonoBehaviour
         {
             Roll();
         }
+        Move(InputManager.Instance.move);
     }
 
     public void Roll()
@@ -64,12 +75,12 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.MovePosition(position);
     }
 
-    public void Loot()
+    public void LootStart()
     {
         isLooting = true;
     }
 
-    public void EndLooting()
+    public void LootEnd()
     {
         isLooting = false;
     }
@@ -103,8 +114,9 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.MovePosition(position);
     }
 
-    public void SetAnimation(Vector2 move)
+    public void SetAnimation()
     {
+        Vector2 move = InputManager.Instance.move;
         if (isLooting)
         {
             return;
@@ -135,8 +147,8 @@ public class PlayerController : MonoBehaviour
 
         while (elapsed < duration)
         {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
 
             transform.localPosition = originalPos + new Vector3(x, y, 0);
 

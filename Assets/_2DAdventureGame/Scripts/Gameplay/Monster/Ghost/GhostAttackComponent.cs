@@ -65,9 +65,9 @@ public class GhostAttackComponent : AttackComponent
 
     public override void Attack()
     {
-        float distance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        Vector2 playerPos = (Vector2)PlayerController.player.transform.position;
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, ai.target.position);
+        Vector2 playerPos = (Vector2)ai.target.position;
+        direction = (ai.target.position - ai.transform.position).normalized;
 
         if (snareCooldown <= 0f)
         {

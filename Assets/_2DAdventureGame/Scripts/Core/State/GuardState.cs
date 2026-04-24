@@ -13,9 +13,8 @@ public class GuardState : IState
 
     public void Enter()
     {
-        dir = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        dir = (ai.target.position - ai.transform.position).normalized;
         ai.Animation.SetGuard(dir);
-       
     }
 
     public void Exit()

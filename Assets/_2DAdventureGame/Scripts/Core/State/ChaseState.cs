@@ -19,8 +19,8 @@ public class ChaseState : IState
     }
     public void Enter()
     {
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
-        playerRandomPosition = (Vector2)PlayerController.player.transform.position;
+        direction = (ai.target.position - ai.transform.position).normalized;
+        playerRandomPosition = (Vector2)ai.target.position;
         ai.Animation.SetMove(direction);
         animationTimer = AnimateTime;
     }
@@ -39,7 +39,7 @@ public class ChaseState : IState
         if (animationTimer <= 0f)
         {
             direction = (playerRandomPosition - (Vector2)ai.transform.position).normalized;
-            playerRandomPosition = (Vector2)PlayerController.player.transform.position;
+            playerRandomPosition = (Vector2)ai.target.position;
             animationTimer = AnimateTime;
             ai.Animation.SetMove(direction);
         }

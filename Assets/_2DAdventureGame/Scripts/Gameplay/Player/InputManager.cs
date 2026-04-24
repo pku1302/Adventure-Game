@@ -7,9 +7,7 @@ public class InputManager : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject radialMenu;
     public GameObject lootUI;
-
-    private IInteractable currentHover; 
-    private IInteractable lootComponent;
+    public static InputManager Instance;
 
     [Header("Player")]
     public InputAction MoveAction; // WASD
@@ -22,16 +20,24 @@ public class InputManager : MonoBehaviour
     public InputAction MouseRightAction; // Mouse Right
     public InputAction RunAction; // Shift
     public bool IsInventoryOpen => inventoryUI.activeSelf;
-    public bool IsRunning  {get; private set; }
-    private Vector2 move;
+    public bool IsRunning { get; private set; }
+    public bool WasMouseRightClicked { get; private set; }
+    public bool WasLaunchActionPressed { get; private set; }
+    public bool WasRollActionPressed { get; private set; }
+    public bool WasInteractionPressed { get; private set; }
+    public bool WasInventoryActionPressed { get; private set; }
+    public bool WasEscapeActionPressed { get; private set; }
+    public Vector2 move { get; private set; }
 
-    public PlayerItem itemHandler;
-    public PlayerController player;
-    public PlayerDash dash;
-    public FlashLightToggle flashLight;
+    // public PlayerItem itemHandler;
+    // public PlayerController player;
+    // public PlayerDash dash;
+    // public FlashLightToggle flashLight;
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+        Instance = this;
     }
 
     private void Start()
@@ -65,50 +71,18 @@ public class InputManager : MonoBehaviour
             IsRunning = false;
         }
 
-        player.SetAnimation(move);
+        WasMouseRightClicked = MouseRightAction.WasPressedThisFrame();
 
-        if (itemHandler.isUsing)
-        {
-            if (MouseRightAction.WasPressedThisFrame())
-            {
-                itemHandler.CancelUse();
-            }
+        WasLaunchActionPressed = !EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame();
 
-            return;
-        }
-        else
-        {
-            if (MouseRightAction.WasPressedThisFrame())
-            {
-                flashLight.ToggleFlashlight();
-            }
-        }
+        WasRollActionPressed = RollAction.WasPressedThisFrame();
 
-        //Launch
-        if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())
-        {
-            player.Launch();
-        }
+        WasInventoryActionPressed = InventoryAction.WasPressedThisFrame();
 
-        // Roll
-        if (RollAction.WasPressedThisFrame())
-        {
-            dash.TryDash();
-        }
+        WasInteractionPressed = InteractionAction.WasPressedThisFrame();
 
-        // ----- UI -----
-        if (EscapeAction.WasPressedThisFrame())
-        {
-            HandleEscape();
-        }
-
-        // Inventory
-        if (InventoryAction.WasPressedThisFrame())
-        {
-            bool isOpen = inventoryUI.activeSelf;
-            inventoryUI.SetActive(!isOpen);
-        }
-
+        WasEscapeActionPressed = EscapeAction.WasPressedThisFrame();
+        
         // Radial
         if (RadialMenuAction.IsPressed())
         {
@@ -118,73 +92,6 @@ public class InputManager : MonoBehaviour
         if (RadialMenuAction.WasReleasedThisFrame())
         {
             radialMenu.SetActive(false);
-        }
-
-        // Looting, Interaction
-        HandleHover();
-        HandleInteractKey();
-    }
-
-    private void FixedUpdate()
-    {
-        player.Move(move);
-    }
-
-    void HandleHover()
-    {
-        Vector2 mousePos = Mouse.current.position.ReadValue();
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-
-        IInteractable newHover = null;
-
-        if (hit.collider != null)
-        {
-            hit.collider.TryGetComponent(out newHover);
-        }
-
-        if (currentHover != newHover)
-        {
-            currentHover?.OnHoverExit();
-            newHover?.OnHoverEnter();
-
-            currentHover = newHover;
-        }
-    }
-
-    void HandleInteractKey()
-    {
-        if (InteractionAction.WasPressedThisFrame())
-        {
-            if (lootComponent != null)
-            {
-                lootComponent.QuitInteract(); // ∑Á∆√ √¢ ¥›±‚
-                inventoryUI.SetActive(false);
-                lootComponent = null;
-                player.EndLooting();
-                return;
-            }
-
-            else if (currentHover != null && currentHover.IsInteractable())
-            {
-                lootComponent = currentHover;
-                lootComponent.StartInteract();
-                player.Loot();
-            }
-        }
-    }
-
-    void HandleEscape()
-    {
-        if (IsInventoryOpen)
-        {
-            inventoryUI.SetActive(false);
-        }
-        if (lootComponent != null)
-        {
-            player.EndLooting();
-            lootComponent.QuitInteract();
-            lootComponent = null;
         }
     }
 }

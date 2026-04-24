@@ -29,7 +29,6 @@ public class Projectile : MonoBehaviour
     {
         AIComponent enemy = collision.GetComponent<AIComponent>();
 
-
         if (enemy != null)
         {
             if (enemy is JiangshiAIComponent jiangshi && jiangshi.guardStack > 0)
@@ -41,8 +40,8 @@ public class Projectile : MonoBehaviour
             {
                 enemy.Health.TakeDamage(10, false);
             }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -3,5 +3,5 @@ using UnityEngine;
 public static class DragData
 {
     public static IDragSource DragSource;
-    public static InventorySlot data;
+    public static ItemSlot data;
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
-    public Inventory inventory;
+    public InventoryUI inventory;
     private Coroutine currentCoroutine;
     public bool isUsing { get; private set; }
 
@@ -15,6 +15,14 @@ public class PlayerItem : MonoBehaviour
     void Awake()
     {
         isUsing = false;
+    }
+
+    private void Update()
+    {
+        if (isUsing && InputManager.Instance.WasMouseRightClicked)
+        {
+            CancelUse();
+        }
     }
 
     public void UseItem(int index)

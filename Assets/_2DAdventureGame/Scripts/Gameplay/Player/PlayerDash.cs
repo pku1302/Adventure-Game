@@ -7,14 +7,16 @@ public class PlayerDash : MonoBehaviour
     public bool IsDashing { get; private set; }
     public Vector2 DashDirection { get; private set; }
     public float dashCost = 10f;
+    public event Action OnDashStart;
 
     private float dashSpeed = 6.0f;
     private PlayerStamina stamina;
-    public event Action OnDashStart;
+    private PlayerController player;
 
     private void Awake()
     {
         IsDashing = false;
+        player = GetComponent<PlayerController>();
         stamina = GetComponent<PlayerStamina>();
     }
 
@@ -25,7 +27,7 @@ public class PlayerDash : MonoBehaviour
 
     public void TryDash()
     {
-        if (IsDashing || PlayerController.player.IsSnared) return;
+        if (IsDashing || player.IsSnared) return;
 
         if (stamina.TryUseStamina(dashCost))
         {

@@ -37,7 +37,7 @@ public class StatueAttackComponent : AttackComponent
         if (ramAttackCooldown <= 0f && !isAttacking)
         {
             isAttacking = true;
-            direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+            direction = (ai.target.position - ai.transform.position).normalized;
             ai.Animation.SetAttack(direction);
             ai.Movement.Rush(direction * 4f);
         }
@@ -62,6 +62,7 @@ public class StatueAttackComponent : AttackComponent
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(monster.Data.attackDamage);
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             hitbox.enabled = false;
@@ -69,7 +70,7 @@ public class StatueAttackComponent : AttackComponent
             if (rb != null)
             {
                 Vector2 dir = (collision.gameObject.transform.position - ai.transform.position).normalized;
-                PlayerController.player.ApplyKnockback(dir, 10f, 0.2f);
+                player.ApplyKnockback(dir, 10f, 0.2f);
             }
         }
     }

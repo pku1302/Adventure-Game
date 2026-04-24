@@ -108,8 +108,7 @@ public class StarAIComponent : AIComponent
 
     bool TryChase()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (playerDistance <= Monster.Data.detectRange)
+        if (target != null && IsPlayerInDetectRange())
         {
             stateMachine.ChangeState(chaseState);
             currentAngry = AngryGage;
@@ -125,6 +124,7 @@ public class StarAIComponent : AIComponent
             if (currentAngry == 0)
             {
                 stateMachine.ChangeState(stopState);
+                target = null;
                 currentStop = StopGage;
             }
             return true;

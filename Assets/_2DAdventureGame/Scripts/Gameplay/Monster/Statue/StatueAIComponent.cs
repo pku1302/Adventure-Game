@@ -127,8 +127,7 @@ public class StatueAIComponent : AIComponent
 
     bool TryStop()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (isBerserk || playerDistance > Monster.Data.detectRange)
+        if (isBerserk || target == null)
         {
             return false;
         }

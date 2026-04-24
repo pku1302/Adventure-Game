@@ -128,8 +128,7 @@ public class JiangshiAIComponent : AIComponent
 
     bool TryChase()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (playerDistance <= Monster.Data.detectRange)
+        if (target != null)
         {
             stateMachine.ChangeState(chaseState);
             currentAngry = AngryGage;

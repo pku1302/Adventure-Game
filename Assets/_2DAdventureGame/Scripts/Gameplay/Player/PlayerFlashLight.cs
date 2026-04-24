@@ -12,5 +12,4 @@ public class PlayerFlashLight : MonoBehaviour
 
         lightTransform.position = worldPos;
     }
-
 }

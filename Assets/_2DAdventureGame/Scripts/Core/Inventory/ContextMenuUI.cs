@@ -6,7 +6,7 @@ public class ContextMenuUI : MonoBehaviour
 {
     public static ContextMenuUI Instance;
     public PlayerItem player;
-    public Inventory inventory;
+    public InventoryUI inventory;
     public int index;
     public GameObject root;
 
@@ -16,7 +16,7 @@ public class ContextMenuUI : MonoBehaviour
         Hide();
     }
 
-    public void Show(InventorySlot item, Vector3 pos, int idx)
+    public void Show(ItemSlot item, Vector3 pos, int idx)
     {
         index = idx;
         root.SetActive(true);

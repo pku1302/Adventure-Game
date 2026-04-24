@@ -80,8 +80,7 @@ public class GhostAIComponent : AIComponent
 
     bool TryStop()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (stateMachine.CurrentState.MonsterState == MonsterState.Chase && playerDistance > Monster.Data.detectRange)
+        if (stateMachine.CurrentState.MonsterState == MonsterState.Chase && target != null)
         {
             stateMachine.ChangeState(stopState);
             return true;
@@ -94,8 +93,7 @@ public class GhostAIComponent : AIComponent
 
     bool TryChase()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
-        if (playerDistance <= Monster.Data.detectRange)
+        if (target != null)
         {
             stateMachine.ChangeState(chaseState);
             return true;

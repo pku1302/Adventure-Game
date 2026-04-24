@@ -6,5 +6,4 @@ public interface IInteractable
     void OnHoverEnter();
     void StartInteract();
     void QuitInteract();
-    bool IsInteractable();
 }

@@ -9,6 +9,10 @@ public abstract class AIComponent : MonoBehaviour
     public HitComponent Hit { get; private set; }
     public LootComponent Loot { get; private set; }
     [HideInInspector]
+    public Transform target;
+    [SerializeField]
+    protected DetectionComponent Detection;
+
     public LootTable lootTable;
     public Monster Monster { get; protected set; }
     protected StateMachine stateMachine;
@@ -18,7 +22,6 @@ public abstract class AIComponent : MonoBehaviour
     protected IState deadState;
     protected IState wanderState;
     protected IState hitState;
-
 
     protected void Init()
     {
@@ -39,6 +42,8 @@ public abstract class AIComponent : MonoBehaviour
         {
             Health.OnDeath += HandleDeath;
         }
+
+        Detection.OnTargetEnter += t => target = t;
     }
 
     public void ChangeState(IState newState)
@@ -54,14 +59,30 @@ public abstract class AIComponent : MonoBehaviour
     private void HandleDeath()
     {
         stateMachine.ChangeState(new DeadState(this));
-        LootComponent loot = GetComponent<LootComponent>();
-        loot.lootItems = lootTable.GenerateLoot();
+        Loot.lootItems = lootTable.GenerateLoot();
     }
 
     public bool IsPlayerInAttackRange()
     {
-        float playerDistance = Vector2.Distance(transform.position, PlayerController.player.transform.position);
+        if (target == null)
+        {
+            return false;
+        }
 
-        return playerDistance <= Monster.Data.attackRange;
+        float distance = Vector2.Distance(target.position, transform.position);
+
+        return  distance <= Monster.Data.attackRange;
+    }
+
+    public bool IsPlayerInDetectRange()
+    {
+        if (target == null)
+        {
+            return false;
+        }
+
+        float distance = Vector2.Distance(target.position, transform.position);
+
+        return distance <= Monster.Data.detectRange;
     }
 }

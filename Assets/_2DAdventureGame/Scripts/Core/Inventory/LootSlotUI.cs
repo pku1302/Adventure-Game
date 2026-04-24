@@ -3,28 +3,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LootSlotUI : MonoBehaviour, IPointerClickHandler, IDragSource, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class LootSlotUI : ItemSlotUI
 {
     private LootUI lootUI;
-    private Inventory playerInventory;
-    public InventorySlot slotData;
-    public Image icon;
-    public Image background;
-    public TMP_Text countText;
-    public int index;
+    private InventoryUI playerInventory;
 
-    public void SetSlot(InventorySlot data, LootUI ui, Inventory inventory, int idx)
+    public override void SetSlot(ItemStorage container, ItemSlot data, int index)
     {
-        slotData = data;
-        lootUI = ui;
-        playerInventory = inventory;
-        index = idx;
+        slot = data;
+        storage = container;
+        lootUI = (LootUI)container;
+        this.index = index;
 
         if (data?.item != null)
         {
             icon.sprite =  data.item.icon;
             countText.text = data.count > 1 ? data.count.ToString() : "";
-            background.color = RarityColorUtility.GetColor(slotData.item.rarity);
+            background.color = RarityColorUtility.GetColor(slot.item.rarity);
         }
         else
         {
@@ -34,37 +29,17 @@ public class LootSlotUI : MonoBehaviour, IPointerClickHandler, IDragSource, IBeg
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            playerInventory.AddItem(slotData.item, slotData.count);
+            playerInventory.AddItem(slot.item, slot.count);
 
-            lootUI.currentLoot.lootItems.Remove(slotData);
+            lootUI.currentLoot.lootItems.Remove(slot);
 
             lootUI.Refresh();
         }
     }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (slotData == null || slotData.item == null) return;
-
-        DragData.DragSource = this;
-        DragIconUI.Instance.Show(icon.sprite);
-        DragIconUI.Instance.countText.text = slotData.count > 1 ? slotData.count.ToString() : "";
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        DragIconUI.Instance.transform.position = eventData.position;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        DragIconUI.Instance.Hide();
-    }
-
 
     public void OnDragEnd()
     {
@@ -72,10 +47,8 @@ public class LootSlotUI : MonoBehaviour, IPointerClickHandler, IDragSource, IBeg
         lootUI.Refresh();
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
-    
-
-
+        base.OnDrop(eventData);
     }
 }

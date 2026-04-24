@@ -19,6 +19,11 @@ public class FlashLightToggle : MonoBehaviour
 
     private void Update()
     {
+        if (InputManager.Instance.WasMouseRightClicked)
+        {
+            ToggleFlashlight();
+        }
+
         if (flashlight.enabled)
         {
             battery -= drainSpeed * Time.deltaTime;

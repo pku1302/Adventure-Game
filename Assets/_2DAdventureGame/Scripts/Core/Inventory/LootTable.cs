@@ -16,9 +16,9 @@ public class LootTable : ScriptableObject
 
     public List<LootEntry> lootEntries = new List<LootEntry>();
 
-    public List<InventorySlot> GenerateLoot()
+    public List<ItemSlot> GenerateLoot()
     {
-        List<InventorySlot> result = new List<InventorySlot>();
+        List<ItemSlot> result = new List<ItemSlot>();
 
         foreach (var entry in lootEntries)
         {
@@ -28,7 +28,7 @@ public class LootTable : ScriptableObject
             {
                 int amount = Random.Range(entry.minAmount , entry.maxAmount + 1);
 
-                result.Add(new InventorySlot(entry.item, amount));
+                result.Add(new ItemSlot(entry.item, amount));
             }
         }
 

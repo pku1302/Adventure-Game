@@ -6,6 +6,8 @@ public class PlayerHealth : MonoBehaviour
     public float maxHP;
     public float currentHP;
     public event Action<float, float> OnHPChanged;
+    public event Action OnDeath;
+    public static event Action<PlayerHealth> OnSpawned;
 
     private PlayerStats stats;
 
@@ -16,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+        OnSpawned?.Invoke(this);
         currentHP = stats.maxHP;
         maxHP = stats.maxHP;
         OnHPChanged?.Invoke(currentHP, maxHP);
@@ -27,6 +30,10 @@ public class PlayerHealth : MonoBehaviour
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
 
         OnHPChanged?.Invoke(currentHP, maxHP);
+        if (currentHP <= 0)
+        {
+            Die();
+        }
     }
 
     public void TakeHeal(float amount)
@@ -35,5 +42,10 @@ public class PlayerHealth : MonoBehaviour
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
 
         OnHPChanged?.Invoke(currentHP, maxHP);
+    }
+
+    private void Die()
+    {
+        OnDeath?.Invoke();
     }
 }

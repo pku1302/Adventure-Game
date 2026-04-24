@@ -2,29 +2,36 @@ using NUnit.Framework;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using System.Collections.Generic;
 
-
-public class LootUI : MonoBehaviour
+public class LootUI : ItemStorage
 {
     public GameObject panel;
-    public Transform slotParent;
-    public GameObject slotPrefab;
-
-    public LootComponent currentLoot;
-    public Inventory playerInventory;
+    public LootComponent currentLoot; // 몬스터 아이템이 담겨 있는 곳
+    public InventoryUI playerInventory;
 
     [SerializeField] private LootOverlayController lootOverlay;
     private Coroutine currentLootRoutine;
 
-
     public void OpenLootUI(LootComponent root)
     {
         currentLoot = root;
+        slots = currentLoot.lootItems;
+        slotCount = currentLoot.lootItems.Count;
         bool isOpen = panel.activeSelf;
         panel.SetActive(!isOpen);
-        StartLoot();
-
         Refresh();
+        StartLoot();
+    }
+
+    protected override void CreateSlotUIs()
+    {
+        for (int i = 0; i < slotCount; i++)
+        {
+            GameObject slot = Instantiate(slotPrefab, slotParent);
+            LootSlotUI ui = slot.GetComponent<LootSlotUI>();
+            slotUIs.Add(ui);
+        }
     }
 
     public void CloseLootUI()
@@ -90,20 +97,21 @@ public class LootUI : MonoBehaviour
 
     public void Refresh()
     {
-        foreach (Transform child in slotParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        for (int i = 0; i < currentLoot.lootItems.Count; i++)
-        {
-            GameObject slot = Instantiate(slotPrefab, slotParent);
-            slot.GetComponent<LootSlotUI>().SetSlot(currentLoot.lootItems[i], this, playerInventory, i);
-        }
+        CreateSlotUIs();
+        UpdateUI();
     }
 
     public void Close()
     {
+        foreach (Transform child in slotParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (var slot in slotUIs)
+        {
+            Destroy(slot.gameObject);
+        }
+        slotUIs.Clear();    
         panel.SetActive(false);
     }
 }

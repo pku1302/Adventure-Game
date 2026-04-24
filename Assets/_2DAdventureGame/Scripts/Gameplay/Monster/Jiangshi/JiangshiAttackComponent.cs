@@ -39,7 +39,7 @@ public class JiangshiAttackComponent : AttackComponent
         if (scratchCooldown <= 0f)
         {
             isAttacking = true;
-            direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+            direction = (ai.target.position - ai.transform.position).normalized;
             ai.Animation.SetAttack(direction);
             scratchCooldown = ai.Monster.Data.attackSpeed;
         }

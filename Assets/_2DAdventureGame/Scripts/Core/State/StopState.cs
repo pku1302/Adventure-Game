@@ -14,7 +14,7 @@ public class StopState : IState
 
     public void Enter()
     {
-        direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+        direction = (ai.target.position - ai.transform.position).normalized;
         ai.Movement.StopMonster();
         ai.Animation.SetStop(direction);
         directionTimer = 1f;
@@ -33,7 +33,7 @@ public class StopState : IState
         directionTimer -= Time.deltaTime;
         if (directionTimer <= 0f)
         {
-            direction = (PlayerController.player.transform.position - ai.transform.position).normalized;
+            direction = (ai.target.position - ai.transform.position).normalized;
             ai.Animation.SetStop(direction);
         }
     }
