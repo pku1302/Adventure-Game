@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 8782413168794236974}
   - component: {fileID: 8199117323962063431}
   - component: {fileID: 2062861107738425997}
+  - component: {fileID: 5063323711630242660}
+  - component: {fileID: 169510766969583864}
   m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -387,6 +389,8 @@ MonoBehaviour:
   baseRunningSpeed: 3
   maxHP: 100
   maxStamina: 100
+  attack: 5
+  defense: 0
 --- !u!114 &2062861107738425997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +406,33 @@ MonoBehaviour:
   currentStamina: 0
   maxStamina: 0
   state: 0
+--- !u!114 &5063323711630242660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204798121083500372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c2fbbb06ca92240a7057e7672f8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  slotCount: 5
+  equipmentManager: {fileID: 169510766969583864}
+  player: {fileID: 7786210725726211440}
+--- !u!114 &169510766969583864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204798121083500372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5a5b72707b33549b1edfa6be179f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
 --- !u!1 &3565644932423351816
 GameObject:
   m_ObjectHideFlags: 0

@@ -59,7 +59,7 @@ public abstract class AIComponent : MonoBehaviour
     private void HandleDeath()
     {
         stateMachine.ChangeState(new DeadState(this));
-        Loot.lootItems = lootTable.GenerateLoot();
+        Loot.InitializeLootItems(lootTable.GenerateLoot());
     }
 
     public bool IsPlayerInAttackRange()

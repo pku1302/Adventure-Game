@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class LootComponent : MonoBehaviour, IInteractable
+public class LootComponent : ContainerManager, IInteractable
 {
-    public List<ItemSlot> lootItems = new List<ItemSlot>();
+    private SpriteRenderer spriteRenderer;
+    private AIComponent ai;
+    private float interactDistance = 1.5f;
+    private bool isHovering = false;
     public LootUI lootUI;
     public InventoryUI inventoryUI;
+    public EquipmentUI equipmentUI;
     public bool isLootingDone = false;
-    private SpriteRenderer spriteRenderer;
-    private float interactDistance = 1.5f;
-    private AIComponent ai;
-    private bool isHovering = false;
+
+    public void InitializeLootItems(List<InventoryItem> items)
+    {
+        this.items = items;
+    }
 
     public void OnHoverExit()
     {
@@ -41,8 +46,7 @@ public class LootComponent : MonoBehaviour, IInteractable
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void Init()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         ai = GetComponent<AIComponent>();
@@ -76,6 +80,7 @@ public class LootComponent : MonoBehaviour, IInteractable
     public void StartInteract()
     {
         inventoryUI.TurnOn();
+        equipmentUI.TurnOn();
         lootUI.OpenLootUI(this);
     }
   

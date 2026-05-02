@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerItem : MonoBehaviour
 {
-    public InventoryUI inventory;
+    public InventoryManager inventory;
     private Coroutine currentCoroutine;
     public bool isUsing { get; private set; }
 
@@ -25,17 +25,15 @@ public class PlayerItem : MonoBehaviour
         }
     }
 
-    public void UseItem(int index)
+    public void UseItem(ItemData item)
     {
         if (isUsing) return;
 
-        var item = inventory.GetItem(index);
         if (item == null) return;
-        if (!item.CanUse()) return;
 
-        if (item is ConsumableItem consumableItem)
+        if (item is ConsumableData consumableItem)
         {
-            currentCoroutine = StartCoroutine(UseCoroutine(consumableItem, index));
+            currentCoroutine = StartCoroutine(UseCoroutine(consumableItem));
         }
     }
 
@@ -56,7 +54,7 @@ public class PlayerItem : MonoBehaviour
         OnUseEnd?.Invoke();
     }
 
-    private IEnumerator UseCoroutine(ConsumableItem item, int index)
+    private IEnumerator UseCoroutine(ConsumableData item)
     {
         isUsing = true;
         float timer = 0f;
@@ -73,9 +71,7 @@ public class PlayerItem : MonoBehaviour
             yield return null;
         }
 
-        item.Use(gameObject);
-        inventory.RemoveItem(index, false);
-
+        item.Use(gameObject); // 효과 적용
         EndUse();
     }
 }
