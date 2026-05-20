@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19dc25d54ab74404cb2ea5d456afbf3e, type: 3}
+  m_Name: First
+  m_EditorClassIdentifier: Assembly-CSharp::DungeonData
+  dungeonName: "\uCD08\uC2EC\uC790\uC6A9"
+  description: "\uCD08\uBCF4\uB97C \uC704\uD55C \uACF3\t\t"
+  warning: "\uBD88\uAC00\uC0AC\uB9AC \uC8FC\uC758"
+  difficulty: "\uC26C\uC6C0"
+  thumbnail: {fileID: 21300012, guid: 3df66ef34f3f3414488489a5934136da, type: 3}
+  sceneName: 

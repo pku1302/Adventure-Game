@@ -16,9 +16,9 @@ MonoBehaviour:
   description: "\uBC25\uC73C\uB85C \uC9C0\uC740 \uB9DB\uC788\uB294 \uC300\uBC25"
   icon: {fileID: 21300000, guid: c5ea83394845a1942b00ce0b77650251, type: 3}
   rarity: 0
-  itemType: 0
+  itemType: 1
   maxStack: 3
   sellPrice: 5
-  healAmount: 10
+  healAmount: 3
   useTime: 5
   healData: {fileID: 11400000, guid: 683e2b2ccda3e9a4c9fc0fa5f400cf8d, type: 2}

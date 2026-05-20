@@ -1,28 +1,26 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerItem : MonoBehaviour
+public class PlayerItem 
 {
-    public InventoryManager inventory;
-    private Coroutine currentCoroutine;
+    private ProgressController progressController;
+    private StatusEffectManager effectManager;
     public bool isUsing { get; private set; }
+
+    private ConsumableData consumable;
 
     public System.Action<float> OnUseProgress;
     public System.Action OnUseStart;
     public System.Action OnUseEnd;
 
-    // Update is called once per frame
-    void Awake()
+    public PlayerItem(ProgressController progressController)
     {
-        isUsing = false;
+        this.progressController = progressController;
     }
 
-    private void Update()
+    public void Init(StatusEffectManager effectManager)
     {
-        if (isUsing && InputManager.Instance.WasMouseRightClicked)
-        {
-            CancelUse();
-        }
+        this.effectManager = effectManager;
     }
 
     public void UseItem(ItemData item)
@@ -33,7 +31,15 @@ public class PlayerItem : MonoBehaviour
 
         if (item is ConsumableData consumableItem)
         {
-            currentCoroutine = StartCoroutine(UseCoroutine(consumableItem));
+            consumable = consumableItem;
+            isUsing = true;
+
+            progressController.Begin(
+                consumableItem.useTime,
+                () =>
+                {
+                    EndUse();
+                });
         }
     }
 
@@ -41,37 +47,17 @@ public class PlayerItem : MonoBehaviour
     {
         if (!isUsing) return;
 
-        StopCoroutine(currentCoroutine);
-        EndUse();
+        isUsing = false;
+        OnUseProgress?.Invoke(0f);
+        progressController.Cancel();
     }
 
     private void EndUse()
     {
         isUsing = false;
-        currentCoroutine = null;
-
+        consumable.Use(effectManager);
         OnUseProgress?.Invoke(0f);
         OnUseEnd?.Invoke();
-    }
-
-    private IEnumerator UseCoroutine(ConsumableData item)
-    {
-        isUsing = true;
-        float timer = 0f;
-        OnUseStart?.Invoke();
-
-        while (timer < item.useTime)
-        {
-            timer += Time.deltaTime;
-
-            float progress = timer / item.useTime;
-            OnUseProgress?.Invoke(progress);
-
-
-            yield return null;
-        }
-
-        item.Use(gameObject); // 효과 적용
-        EndUse();
+        progressController.Cancel();
     }
 }

@@ -4,24 +4,25 @@ using UnityEngine.EventSystems;
 
 public class InventoryUI : ItemContainerUI
 {
-    public InventoryManager inventory;
+    private IInventoryPresenter inventoryPresenter;
 
-    private void Start()
+    public void Init(IItemSlotPresenter presenter, ItemContainer container, IInventoryPresenter invPresenter)
     {
-        CreateSlotUIs();
-        UpdateUI();
+        inventoryPresenter = invPresenter;
+        base.Init(presenter, container);
     }
+
     public void Toggle()
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
 
-    public void TurnOff()
+    public override void TurnOff()
     {
         gameObject.SetActive(false);
     }
 
-    public void TurnOn()
+    public override void TurnOn()
     {
         gameObject.SetActive(true);
     }
@@ -45,22 +46,25 @@ public class InventoryUI : ItemContainerUI
     }
 
     // ºó ½½·Ô ¸¸µé±â
-    protected override void CreateSlotUIs()
+    protected override void CreateSlotUIs(int index)
     {
-        for (int i = 0; i < inventory.slotCount; i++)
+        slotUIs.Clear();
+
+        for (int i = 0; i < container.GetSlotCount(); i++)
         {
-            GameObject go = Instantiate(slotPrefab, slotParent);
-            InventorySlotUI ui = go.GetComponent<InventorySlotUI>();
+            GameObject slot = Instantiate(slotPrefab, slotParent);
+            InventorySlotUI ui = slot.GetComponent<InventorySlotUI>();
+            ui.Init(i, presenter, inventoryPresenter, container);
             slotUIs.Add(ui);
         }
     }
 
     // ÀüÃ¼ ½½·Ôµé ¾÷µ¥ÀÌÆ®
-    public override void UpdateUI()
+    protected override void UpdateUI()
     {
-        for (int i = 0; i < inventory.GetSlotCount(); i++)
+        for (int i = 0; i < slotUIs.Count; i++)
         {
-            slotUIs[i].SetSlot(this, inventory.GetSlotItem(i), i);
+            slotUIs[i].Refresh();
         }
     }
 }

@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public enum EquipmentType
-{
-    Weapon,
-    Helmet,
-    Armor,
-    Pants,
-    Boots
-}
+
 
 [CreateAssetMenu(menuName = "Item/Equipment")]
 public class EquipmentData : ItemData, IEquipable
 {
-    public EquipmentType equipmentType;
     public float attack;
     public float defense;
+    public string id;
+    public EquipmentData nextEnhanceItem;
+    public EnhanceCost enhanceCost;
+}
 
+[System.Serializable]
+public class EnhanceCost
+{
+    public ItemData material;
+    public int materialCount;
 
+    public int gold;
 }

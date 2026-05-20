@@ -7,10 +7,8 @@ public class ConsumableData : ItemData, IUsable
     public float useTime;
     public StatusEffectData healData;
 
-    public void Use(GameObject player)
+    public void Use(StatusEffectManager effectManager)
     {
-        var playerBuffManager = player.GetComponent<StatusEffectManager>();
-        playerBuffManager.AddEffect(new HealBuff(healData, healAmount));
+        effectManager.AddEffect(new HealBuff(healData, healAmount));
     }
-
 }

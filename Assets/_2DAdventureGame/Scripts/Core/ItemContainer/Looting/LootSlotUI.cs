@@ -1,50 +1,39 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class LootSlotUI : ItemSlotUI
 {
-    private LootUI lootUI;
+    private ILootPresenter lootPresenter;
 
-    public override void SetSlot(ItemContainerUI container, InventoryItem data, int index)
+    public void Init(int index, IItemSlotPresenter presenter, ILootPresenter lootPresenter, ItemContainer container)
     {
-        slotItem = data;
-        this.containerUI = container;
-        lootUI = (LootUI)container;
         this.index = index;
-        InitializeContainerManager();
-
-        if (slotItem != null)
-        {
-            icon.sprite =  slotItem.data.icon;
-            countText.text = data.count > 1 ? data.count.ToString() : "";
-            background.color = RarityColorUtility.GetColor(slotItem.data.rarity);
-        }
-        else
-        {
-            icon.sprite = null;
-            countText.text = "";
-            background.color = Color.white;
-        }
+        this.presenter = presenter;
+        this.container = container;
+        this.lootPresenter = lootPresenter;
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        if (slotItem == null)
+            return;
+
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (slotItem == null) return;
-
-            lootUI.playerInventory.AddItem(slotItem.data, slotItem.count);
-            lootUI.currentLoot.RemoveItem(index);
-
-            lootUI.UpdateUI();
-            lootUI.inventoryUI.UpdateUI();
+            lootPresenter.TakeItem(container, index);
         }
     }
 
-    public override void InitializeContainerManager()
+    public override void OnDrop(PointerEventData eventData)
     {
-        containerManager = lootUI.currentLoot;
+        base.OnDrop(eventData);
+        lootPresenter.OnDrop(
+            dropResult.from,
+            dropResult.to,
+            dropResult.fromIndex,
+            dropResult.toIndex,
+            dropResult.amount,
+            isSplitMode
+            );
     }
 }

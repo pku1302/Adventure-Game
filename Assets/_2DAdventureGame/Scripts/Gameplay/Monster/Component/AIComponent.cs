@@ -7,13 +7,12 @@ public abstract class AIComponent : MonoBehaviour
     public AnimationComponent Animation { get; private set; }
     public HealthComponent Health { get; private set; }
     public HitComponent Hit { get; private set; }
-    public LootComponent Loot { get; private set; }
+
     [HideInInspector]
     public Transform target;
     [SerializeField]
     protected DetectionComponent Detection;
 
-    public LootTable lootTable;
     public Monster Monster { get; protected set; }
     protected StateMachine stateMachine;
 
@@ -29,7 +28,6 @@ public abstract class AIComponent : MonoBehaviour
         Animation = GetComponent<AnimationComponent>();
         Health = GetComponent<HealthComponent>();
         Hit = GetComponent<HitComponent>();
-        Loot = GetComponent<LootComponent>();
 
         chaseState = new ChaseState(this);
         stopState = new StopState(this);
@@ -59,7 +57,6 @@ public abstract class AIComponent : MonoBehaviour
     private void HandleDeath()
     {
         stateMachine.ChangeState(new DeadState(this));
-        Loot.InitializeLootItems(lootTable.GenerateLoot());
     }
 
     public bool IsPlayerInAttackRange()

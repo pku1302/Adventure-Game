@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rigidbody2d;
     private PlayerDash dash;
-    private bool isLooting = false;
-    private bool isKnockback = false;
+
     private float runningCost = 8.0f;
 
     private Animator animator;
@@ -21,20 +20,54 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseDirection;
     private PlayerStats stats;
     private StatusEffectManager statusEffectManager;
+    private InteractionController interactionController;
+    private ProgressController progressController;
     private PlayerStamina stamina;
+    private GameManager gameManager;
+    private PlayerItem playerItem;
 
-    public InputManager inputManager;
-    public bool IsSnared {  get; private set; }
+    [Header("Player")]
+    public InputAction MoveAction; // WASD
+    public InputAction LaunchAction; // Mouse Left
+    public InputAction RollAction; // Space
+    public InputAction InteractionAction; // F
+    public InputAction RunAction; // Shift
+    public InputAction MouseRightAction; // Mouse Right
+
+    public bool IsSnared { get; private set; }
+    public bool IsRunning { get; private set; }
+    public bool IsInteracting { get; private set; }
+
+    public Vector2 move { get; private set; }
+
+    private bool isKnockback = false;
+
+    public void Init(InteractionController itc, PlayerItem playerItem, ProgressController progressController, GameManager gameManager)
+    {
+        interactionController = itc;
+        this.playerItem = playerItem;
+        this.progressController = progressController;
+        this.gameManager = gameManager;
+    }
 
     void Start()
     {
-        stats= GetComponent<PlayerStats>();
+        MoveAction.Enable();
+        LaunchAction.Enable();
+        RollAction.Enable();
+        InteractionAction.Enable();
+        RunAction.Enable();
+        MouseRightAction.Enable();
+
+        stats = GetComponent<PlayerStats>();
         dash = GetComponent<PlayerDash>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         statusEffectManager = GetComponent<StatusEffectManager>();
         stamina = GetComponent<PlayerStamina>();
         dash.OnDashStart += () => animator.SetTrigger("Roll");
+
+        IsRunning = false;
     }
 
     // Update is called once per frame
@@ -49,14 +82,47 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
         SetAnimation();
 
-        if (InputManager.Instance.WasLaunchActionPressed)
+        move = MoveAction.ReadValue<Vector2>();
+
+        if (RunAction.IsPressed())
         {
-            Launch();
+            IsRunning = true;
         }
 
-        if (InputManager.Instance.WasRollActionPressed)
+        if (RunAction.WasReleasedThisFrame())
+        {
+            IsRunning = false;
+        }
+
+        if (!EventSystem.current.IsPointerOverGameObject() && LaunchAction.WasPressedThisFrame())
+        {
+            Launch();
+            playerItem.CancelUse();
+        }
+
+        if (RollAction.WasPressedThisFrame())
         {
             dash.TryDash();
+            playerItem.CancelUse();
+        }
+
+        progressController.Tick();
+
+        if (InteractionAction.IsPressed())
+        {
+            IInteractable target = interactionController.BeginInteract();
+            IsInteracting = true;
+        }
+
+        if (InteractionAction.WasReleasedThisFrame())
+        {
+            interactionController.CancleInteract();
+            IsInteracting = false;
+        }
+
+        if (MouseRightAction.WasPressedThisFrame() && playerItem.isUsing)
+        {
+            playerItem.CancelUse();
         }
     }
     private void FixedUpdate()
@@ -65,7 +131,12 @@ public class PlayerController : MonoBehaviour
         {
             Roll();
         }
-        Move(InputManager.Instance.move);
+        Move(move);
+    }
+
+    public bool IsGamePlay()
+    {
+        return gameManager.CurrentState == GameState.GamePlay;
     }
 
     public void Roll()
@@ -75,40 +146,34 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.MovePosition(position);
     }
 
-    public void LootStart()
-    {
-        isLooting = true;
-    }
-
-    public void LootEnd()
-    {
-        isLooting = false;
-    }
-
-    public void ToggleSnare()
+    public void ToggleIsSnared()
     {
         IsSnared = !IsSnared;
     }
 
+
     public void Move(Vector2 move)
     {
-        if (dash.IsDashing || isLooting || isKnockback || IsSnared)
+        if (dash.IsDashing || isKnockback || IsSnared || IsInteracting || gameManager.CurrentState != GameState.GamePlay)
         {
             return;
         }
         float speed = stats.baseMoveSpeed;
 
-        if (inputManager.IsRunning && 
-            !statusEffectManager.isUsingItem &&
+        if (IsRunning &&
+            !playerItem.isUsing &&
             !stamina.isExhausted() &&
-            move != Vector2.zero )
+            move != Vector2.zero)
         {
             stamina.TryUseStamina(runningCost * Time.deltaTime);
             speed *= 2.5f;
-
         }
 
         speed = statusEffectManager.GetFinalSpeed(speed);
+        if (playerItem.isUsing)
+        {
+            speed *= 0.5f;
+        }
 
         Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.fixedDeltaTime;
         rigidbody2d.MovePosition(position);
@@ -116,8 +181,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetAnimation()
     {
-        Vector2 move = InputManager.Instance.move;
-        if (isLooting)
+        if (IsInteracting || gameManager.CurrentState != GameState.GamePlay)
         {
             return;
         }
@@ -134,29 +198,14 @@ public class PlayerController : MonoBehaviour
 
     public void Launch()
     {
+        if (IsInteracting || gameManager.CurrentState != GameState.GamePlay)
+        {
+            return;
+        }
         GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.1f, Quaternion.identity);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(mouseDirection, 300);
         animator.SetTrigger("Launch");
-    }
-
-    public IEnumerator HitShake(float duration, float magnitude)
-    {
-        Vector3 originalPos = transform.localPosition;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
-            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
-
-            transform.localPosition = originalPos + new Vector3(x, y, 0);
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.localPosition = originalPos;
     }
 
     public void ApplyKnockback(Vector2 dir, float force, float duration)

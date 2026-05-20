@@ -10,31 +10,28 @@ public abstract class ItemSlotUI : MonoBehaviour
     , IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     , IDropHandler, IDraggable, IPointerEnterHandler, IPointerExitHandler
 {
-    public Image icon;
-    public Image background;
-    public TMP_Text countText;
-    public int index;
+    [SerializeField] protected Image icon;
+    [SerializeField] protected Image background;
+    [SerializeField] protected TMP_Text countText;
 
-    protected ContainerManager containerManager; // 실제 데이터 참조
-    protected ItemContainerUI containerUI; // ui 컨테이너 참조
+    protected ItemContainer container;
     protected InventoryItem slotItem; // 슬롯에 담긴 아이템
-    protected bool isHovering = false;
+    protected int index;
+    protected IItemSlotPresenter presenter;
+
+    protected
+    private bool isHovering = false;
+    private static int splitAmount;
     protected static bool isSplitMode;
-    protected static int splitAmount;
 
     public int GetSlotIndex()
     {
         return index;
     }
 
-    public ItemContainerUI GetSourceUI()
+    public ItemContainer GetContainer()
     {
-        return containerUI;
-    }
-
-    public ContainerManager GetContainerManagerRef()
-    {
-        return containerManager;
+        return container;
     }
 
     public InventoryItem GetInventoryItem()
@@ -42,10 +39,31 @@ public abstract class ItemSlotUI : MonoBehaviour
         return slotItem;
     }
 
-    public abstract void InitializeContainerManager();
-
     // 슬롯에 아이템을 담고 초기화
-    public abstract void SetSlot(ItemContainerUI container, InventoryItem data, int index);
+    public virtual void SetSlot(InventoryItem data, int index)
+    {
+        slotItem = data;
+        this.index = index;
+
+        if (slotItem != null)
+        {
+            icon.sprite = slotItem.data.icon;
+            countText.text = slotItem.count > 1 ? slotItem.count.ToString() : "";
+            background.color = RarityColorUtility.GetColor(data.data.rarity);
+        }
+        else
+        {
+            background.color = Color.white;
+            icon.sprite = null;
+            countText.text = "";
+        }
+    }
+
+    public void Refresh()
+    {
+        slotItem = presenter.GetSlotData(container, index);
+        SetSlot(slotItem, index);
+    }
 
     // 호버 시 툴팁
     public void OnPointerEnter(PointerEventData eventData)
@@ -88,8 +106,8 @@ public abstract class ItemSlotUI : MonoBehaviour
         }
 
         DragData.Draggable = this;
-        DragIconUI.Instance.countText.text = splitAmount > 1 ? splitAmount.ToString() : "";
         DragIconUI.Instance.Show(icon.sprite);
+        DragIconUI.Instance.countText.text = splitAmount > 1 ? splitAmount.ToString() : "";
     }
 
     // 드래그 중
@@ -99,12 +117,24 @@ public abstract class ItemSlotUI : MonoBehaviour
     }
 
     // 드래그 끝
-    public virtual void OnEndDrag(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
         DragIconUI.Instance.Hide();
         isSplitMode = false;
         splitAmount = 0;
     }
+
+    public class DropResult
+    {
+        public ItemContainer from;
+        public ItemContainer to;
+        public InventoryItem fromItem;
+        public int fromIndex;
+        public int toIndex;
+        public int amount;
+    }
+
+    protected DropResult dropResult = new DropResult();
 
     // 슬롯 위로 드랍되었을 때]
     public virtual void OnDrop(PointerEventData eventData)
@@ -113,23 +143,21 @@ public abstract class ItemSlotUI : MonoBehaviour
         {
             return;
         }
-        int fromItemAmount = DragData.Draggable.GetInventoryItem().count; 
-        int fromIndex = DragData.Draggable.GetSlotIndex();
-        ContainerManager from = DragData.Draggable.GetContainerManagerRef();
-        ContainerManager to = containerManager;
-        ItemContainerUI fromUI = DragData.Draggable.GetSourceUI();
-        int amount = isSplitMode ? splitAmount : fromItemAmount;
 
-        if (InventorySystem.Move(from, to, fromIndex, index, amount))
-        {
-            containerUI.UpdateUI();
-            fromUI.UpdateUI();
-        }
+        dropResult.from = DragData.Draggable.GetContainer();
+        dropResult.to = container;
+        dropResult.fromItem = DragData.Draggable.GetInventoryItem();
+        dropResult.fromIndex = DragData.Draggable.GetSlotIndex();
+        dropResult.toIndex = index;
+        dropResult.amount = isSplitMode ? splitAmount : dropResult.fromItem.count;
+
         DragIconUI.Instance.Hide();
         DragData.Draggable = null;
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
+        if (slotItem == null)
+            return;
     }
 }

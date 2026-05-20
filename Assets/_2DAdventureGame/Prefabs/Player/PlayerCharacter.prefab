@@ -17,12 +17,9 @@ GameObject:
   - component: {fileID: 4426432414415936900}
   - component: {fileID: 7693411150751515970}
   - component: {fileID: 5506236705044563048}
-  - component: {fileID: 7786210725726211440}
   - component: {fileID: 8782413168794236974}
   - component: {fileID: 8199117323962063431}
   - component: {fileID: 2062861107738425997}
-  - component: {fileID: 5063323711630242660}
-  - component: {fileID: 169510766969583864}
   m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -38,8 +35,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204798121083500372}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 78.785095, y: 51.299713, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -124,7 +121,60 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5846980631479086188, guid: 0f6e29892b338904183c13a51ff1aa69,
     type: 3}
   timeInvincible: 2
-  inputManager: {fileID: 0}
+  MoveAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2977b603-bdf8-4219-9df6-3c038f66772a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LaunchAction:
+    m_Name: Launch
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e653d8a9-e7d2-4684-b717-46568ae52575
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RollAction:
+    m_Name: Roll
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 9120e0ed-5fc9-4078-ad54-372df9b31f7d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  InteractionAction:
+    m_Name: Interaction
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 241d8f1f-0ddd-4b6c-84c8-a419cdee013c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RunAction:
+    m_Name: Run
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4765ac2d-95d1-45d0-90bc-11f8bb290ad3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  MouseRightAction:
+    m_Name: Mouse Right
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 47b26b59-2633-40fd-af04-3853473c80fa
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!50 &6154785521547744963
 Rigidbody2D:
   serializedVersion: 5
@@ -344,19 +394,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHP: 100
   currentHP: 0
---- !u!114 &7786210725726211440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204798121083500372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a84401839efc04b8c48b9552b971cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerItem
-  inventory: {fileID: 0}
 --- !u!114 &8782413168794236974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,8 +426,10 @@ MonoBehaviour:
   baseRunningSpeed: 3
   maxHP: 100
   maxStamina: 100
-  attack: 5
-  defense: 0
+  baseAttack: 5
+  totalAttack: 0
+  baseDefense: 0
+  totalDefense: 0
 --- !u!114 &2062861107738425997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,33 +445,6 @@ MonoBehaviour:
   currentStamina: 0
   maxStamina: 0
   state: 0
---- !u!114 &5063323711630242660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204798121083500372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c2fbbb06ca92240a7057e7672f8db1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  slotCount: 5
-  equipmentManager: {fileID: 169510766969583864}
-  player: {fileID: 7786210725726211440}
---- !u!114 &169510766969583864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204798121083500372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f5a5b72707b33549b1edfa6be179f6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
 --- !u!1 &3565644932423351816
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 245143110266605592}
   - component: {fileID: 5349503615343609280}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: FlashLightRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

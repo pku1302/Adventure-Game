@@ -9,11 +9,10 @@ public class TooltipUI : MonoBehaviour
     public GameObject root;
     public TextMeshProUGUI descriptionText;
 
-    
-    void Awake()
+    private void Start()
     {
         Instance = this;
-        Hide();
+        gameObject.SetActive(false);
     }
 
     public void Show(ItemData item, Vector3 pos)

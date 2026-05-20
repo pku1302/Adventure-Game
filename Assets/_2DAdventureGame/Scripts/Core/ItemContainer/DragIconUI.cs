@@ -18,7 +18,7 @@ public class DragIconUI : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive (false);
+        gameObject.SetActive(false);
     }
 
     public void Show(Sprite sprite)

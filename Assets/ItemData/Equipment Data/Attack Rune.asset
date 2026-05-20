@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8820715741bc1428a9200891a080a4, type: 3}
+  m_Name: Attack Rune
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
+  itemName: Attack Rune
+  description: "\uD53C\uD574\uB7C9\uC744 \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
+  icon: {fileID: 2256003669163676861, guid: e52ca582336cc404baa77e40fdb201b4, type: 3}
+  rarity: 1
+  itemType: 0
+  maxStack: 0
+  sellPrice: 0
+  attack: 5
+  defense: 0
+  id: atk
+  nextEnhanceItem: {fileID: 11400000, guid: 115a59cb7f2301441bd53d62d8fc1c15, type: 2}
+  enhanceCost:
+    material: {fileID: 11400000, guid: 09bd94c6ac22d124fa30b48d09d4d014, type: 2}
+    materialCount: 1
+    gold: 1

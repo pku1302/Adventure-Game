@@ -44,6 +44,7 @@ public class HealthComponent : MonoBehaviour
     private void Die()
     {
         CurrentHp = 0;
+        gameObject.layer = LayerMask.NameToLayer("Dead Body");
         OnDeath?.Invoke();
     }
 }

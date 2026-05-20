@@ -4,10 +4,10 @@ using UnityEngine.XR;
 
 public enum GameState
 {
-    Hub,
-    Dungeon,
-    Loading,
-    Paused
+    MainMenu,
+    GamePlay,
+    UI,
+    Pause
 }
 
 public class GameManager : MonoBehaviour
@@ -26,37 +26,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        PlayerHealth.OnSpawned += RegisterPlayer;
-    }
-
-    void RegisterPlayer(PlayerHealth player)
-    {
-        player.OnDeath += HandlePlayerDeath;
-    }
-
-    private void Start()
-    {
-    }
-
-    private void HandlePlayerDeath()
-    {
-        ReturnToHub();
-    }
-
-    public void EnterDungeon()
-    {
-        ChangeState(GameState.Dungeon);
-        SceneManager.LoadScene("DungeonScene");
-    }
-
-    public void ReturnToHub()
-    {
-        ChangeState(GameState.Loading);
-        SceneManager.LoadScene("HubScene");
     }
 
     public void ChangeState(GameState newState)
     {
         CurrentState = newState;
     }
+
 }

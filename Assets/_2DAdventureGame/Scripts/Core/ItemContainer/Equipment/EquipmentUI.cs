@@ -1,58 +1,41 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EquipmentUI : ItemContainerUI
 {
-    public EquipmentManager equipment;
-    public InventoryUI inventoryUI;
-    public InventoryManager inventory;
-
-    public EquipmentSlotUI helmetSlot;
-    public EquipmentSlotUI armorSlot;
-    public EquipmentSlotUI pantsSlot;
-    public EquipmentSlotUI bootsSlot;
-    public EquipmentSlotUI weaponSlot;
-
-    //public enum EquipmentType
-    //{
-    //    Weapon,
-    //    Helmet,
-    //    Armor,
-    //    Pants,
-    //    Boots
-    //}
-
-    void Start()
+    private IEquipmentPresenter equipmentPresenter;
+    public void Init(IItemSlotPresenter presenter, ItemContainer container, IEquipmentPresenter equipmentPresenter)
     {
-        equipment.OnEquipmentChanged += UpdateUI;
-        UpdateUI();
+        this.equipmentPresenter = equipmentPresenter;
+        base.Init(presenter, container);
     }
 
-    public override void UpdateUI()
-    {
-        helmetSlot.SetSlot(this, equipment.GetEquipment(EquipmentType.Helmet), 0);
-        armorSlot.SetSlot(this, equipment.GetEquipment(EquipmentType.Armor), 1);
-        pantsSlot.SetSlot(this, equipment.GetEquipment(EquipmentType.Pants), 2);
-        bootsSlot.SetSlot(this, equipment.GetEquipment(EquipmentType.Boots), 3);
-        weaponSlot.SetSlot(this, equipment.GetEquipment(EquipmentType.Weapon), 4);
-    }
-
-    protected override void CreateSlotUIs()
-    {
-        
-    }
-
-    public void Toggle()
-    {
-        gameObject.SetActive(!gameObject.activeSelf);
-    }
-
-    public void TurnOff()
+    public override void TurnOff()
     {
         gameObject.SetActive(false);
     }
 
-    public void TurnOn()
+    public override void TurnOn()
     {
         gameObject.SetActive(true);
+    }
+
+    protected override void CreateSlotUIs(int index)
+    {
+        for (int i = 0; i < container.GetSlotCount(); i++)
+        {
+            GameObject slot = Instantiate(slotPrefab, slotParent);
+            EquipmentSlotUI ui = slot.GetComponent<EquipmentSlotUI>();
+            ui.Init(i, presenter, equipmentPresenter, container);
+            slotUIs.Add(ui);
+        }
+    }
+
+    protected override void UpdateUI()
+    {
+        for (int i = 0; i < slotUIs.Count; i++)
+        {
+            slotUIs[i].Refresh();
+        }
     }
 }

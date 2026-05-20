@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 [RequireComponent (typeof(Monster))]
@@ -11,9 +12,18 @@ public class Monster : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip deadSound;
     public AudioClip attackSound;
+    public LootComponent Loot { get; private set; }
 
     private bool isLeft = false;
     private bool executed = false;
+    private HealthComponent healthComponent;
+
+    private void Start()
+    {
+        Loot = GetComponent<LootComponent>();
+        healthComponent = GetComponent<HealthComponent>();
+    }
+
 
     void PlayFootStep()
     {

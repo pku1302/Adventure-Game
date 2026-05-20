@@ -2,8 +2,11 @@ using UnityEngine;
 
 public interface IInteractable
 {
+    float HoldTime { get;}
     void OnHoverExit();
     void OnHoverEnter();
-    void StartInteract();
-    void QuitInteract();
+    Transform GetTransform();
+    void Interact();
 }
+
+

@@ -1,56 +1,46 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class InventorySlotUI : ItemSlotUI
 {
-    private InventoryUI inventoryUI;
-
-    public override void SetSlot(ItemContainerUI container, InventoryItem data, int index)
+    private IInventoryPresenter inventoryPresenter;
+    public void Init(int index, IItemSlotPresenter presenter, IInventoryPresenter inventoryPresenter, ItemContainer container)
     {
-        inventoryUI = (InventoryUI)container;
-        slotItem = data;
-        this.containerUI = container;
         this.index = index;
-        InitializeContainerManager();
-
-        if (slotItem != null)
-        {
-            icon.sprite = slotItem.data.icon;
-            countText.text = slotItem.count > 1 ? slotItem.count.ToString() : "";
-            background.color = RarityColorUtility.GetColor(data.data.rarity);
-        }
-        else
-        {
-            background.color = Color.white;
-            icon.sprite = null;
-            countText.text = "";
-        }
+        this.presenter = presenter;
+        this.container = container;
+        this.inventoryPresenter = inventoryPresenter;
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if (slotItem != null && eventData.button == PointerEventData.InputButton.Right)
+        if (slotItem == null)
+            return;
+
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            ContextMenuUI.Instance.Hide();
-            if (slotItem.data is EquipmentData e)
+            if (slotItem.data.itemType == ItemType.Equipment)
             {
-                inventoryUI.inventory.EquipItem(slotItem, index);
-                inventoryUI.UpdateUI();
-                return;
+                inventoryPresenter.EquipItem(index);
             }
-            ContextMenuUI.Instance.Show(slotItem, transform.position, index);
-        }
-
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            ContextMenuUI.Instance.Hide();
+            else if (slotItem.data.itemType == ItemType.Consumable)
+            {
+                inventoryPresenter.OpenContextMenu(index, transform.position);
+            }
         }
     }
 
-    public override void InitializeContainerManager()
+    public override void OnDrop(PointerEventData eventData)
     {
-        containerManager = inventoryUI.inventory;
+        base.OnDrop(eventData);
+        inventoryPresenter.OnDrop(
+            dropResult.from,
+            dropResult.to,
+            dropResult.fromIndex,
+            dropResult.toIndex,
+            dropResult.amount,
+            isSplitMode
+        );
     }
+
 }

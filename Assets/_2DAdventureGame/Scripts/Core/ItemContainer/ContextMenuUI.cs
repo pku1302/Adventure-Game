@@ -4,24 +4,27 @@ using UnityEngine.InputSystem;
 
 public class ContextMenuUI : MonoBehaviour
 {
-    private InventoryItem item;
-    public InventoryUI inventoryUI;
+    private IContextMenuPresenter presenter;
     public static ContextMenuUI Instance;
-    public InventoryManager inventory;
-    public int index;
+    public int currentIndex;
     public GameObject root;
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
-        Hide();
     }
 
-    public void Show(InventoryItem item, Vector3 pos, int idx)
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
+
+    public void Show(IContextMenuPresenter presenter, Vector3 pos, int index)
     {
         root.SetActive(true);
-        this.item = item;
-        index = idx;
+        currentIndex = index;
+        this.presenter = presenter;
         root.transform.position = pos + new Vector3(32f, 0f);
     }
 
@@ -32,15 +35,13 @@ public class ContextMenuUI : MonoBehaviour
 
     public void OnClickUse()
     {
-        inventory.UseItem(item, index);
-        inventoryUI.UpdateUI();
+        presenter.UseItem(currentIndex);
         Hide();
     }
 
     public void OnClickDrop()
     {
-        inventory.RemoveItem(index);
-        inventoryUI.UpdateUI();
+        presenter.DropItem(currentIndex);
         Hide();
     }
 }

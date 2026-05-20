@@ -8,7 +8,6 @@ public class PlayerHealth : MonoBehaviour
     public event Action<float, float> OnHPChanged;
     public event Action OnDeath;
     public static event Action<PlayerHealth> OnSpawned;
-
     private PlayerStats stats;
 
     private void Awake()
@@ -26,7 +25,9 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHP -= damage;
+        float reduction = Mathf.Clamp01(PlayerStats.stats.totalDefense / 100f);
+        float finalDamage = damage * (1f - reduction);
+        currentHP -= finalDamage;
         currentHP = Mathf.Clamp(currentHP, 0, maxHP);
 
         OnHPChanged?.Invoke(currentHP, maxHP);

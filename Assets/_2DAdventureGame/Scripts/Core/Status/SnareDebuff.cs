@@ -10,12 +10,12 @@ public class SnareDebuff : StatusEffect
     protected override void OnMaxStackReached(StatusEffectManager target)
     {
         base.OnMaxStackReached(target);
-        target.player.ToggleSnare();
+        target.player.ToggleIsSnared();
     }
 
     public override void OnRemove(StatusEffectManager target)
     {
         base.OnRemove(target);
-        target.player.ToggleSnare();
+        target.player.ToggleIsSnared();
     }
 }
