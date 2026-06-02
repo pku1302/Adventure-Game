@@ -7,14 +7,14 @@ public abstract class AttackComponent : MonoBehaviour
     public event Action OnAttackEnd;
     public bool isAttacking;
 
-    protected Monster monster;
     protected Vector2 direction;
+    [SerializeField]
     protected AIComponent ai;
+    [SerializeField]
+    protected Monster monster; 
 
     protected void Init()
     {
-        monster = GetComponent<Monster>();
-        ai = GetComponent<AIComponent>();
     }
 
     // 애니메이터에서 호출
@@ -35,7 +35,7 @@ public abstract class AttackComponent : MonoBehaviour
         OnAttackEnd?.Invoke();
     }
 
-    public void SetAttackStart(Vector2 dir)
+    public virtual void SetAttackStart(Vector2 dir)
     {
         direction = dir;
     }

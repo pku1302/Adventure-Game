@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IShopPresenter
 {
-    void OnRightClickShopSlot(ItemContainer container, int index);
+    bool OnRightClickShopSlot(ItemContainer container, int index);
 }
 
 public class ShopPresenter : IItemSlotPresenter, IInteractionPresenter, IShopPresenter
@@ -36,14 +36,14 @@ public class ShopPresenter : IItemSlotPresenter, IInteractionPresenter, IShopPre
         return container.GetSlotItem(index);
     }
 
-    public void OnRightClickShopSlot(ItemContainer container, int index)
+    public bool OnRightClickShopSlot(ItemContainer container, int index)
     {
         if (currentShop == null)
-            return;
+            return false;
 
         if (container is ShopContainer shop)
         {
-            shopService.Buy(
+            return shopService.Buy(
                 currentShop,
                 inventory,
                 index
@@ -52,8 +52,10 @@ public class ShopPresenter : IItemSlotPresenter, IInteractionPresenter, IShopPre
 
         else if (container is Inventory inv)
         {
-            shopService.Sell(inventory, index);
+            return shopService.Sell(inventory, index);
         }
+
+        return false;
     }
 
     public void Interact(IInteractable target)

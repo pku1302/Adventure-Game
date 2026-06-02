@@ -11,5 +11,4 @@ public class ShopData : ScriptableObject
 public class ShopItem
 {
     public ItemData item;
-    public int price;
 }

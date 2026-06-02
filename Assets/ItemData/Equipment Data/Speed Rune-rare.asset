@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8820715741bc1428a9200891a080a4, type: 3}
+  m_Name: Speed Rune-rare
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
+  itemName: "\uC774\uB3D9\uC18D\uB3C4 \uB8EC"
+  description: "\uC774\uB3D9\uC18D\uB3C4\uB97C \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4"
+  icon: {fileID: -2397021528011348216, guid: 1849b740d143f8744a0c2faddd60c835, type: 3}
+  rarity: 1
+  itemType: 0
+  maxStack: 1
+  sellPrice: 0
+  buyPrice: 0
+  attack: 0
+  defense: 0
+  stamina: 0
+  speed: 0.3
+  id: speed
+  nextEnhanceItem: {fileID: 11400000, guid: 78cafa6978b11b3469b6f954ba67cd0a, type: 2}
+  enhanceCost:
+    material: {fileID: 11400000, guid: b994df0a0d8fc5643b79d1aa309d0c55, type: 2}
+    materialCount: 1
+    gold: 5

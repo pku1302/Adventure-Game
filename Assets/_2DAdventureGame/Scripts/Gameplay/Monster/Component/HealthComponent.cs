@@ -10,7 +10,7 @@ public class HealthComponent : MonoBehaviour
     public int MaxHp { get; private set; }
     public bool IsDead => CurrentHp <= 0;
 
-    public event Action OnHit;
+    public event Action<bool> OnHit;
     public event Action OnDeath;
     public event Action OnGuard;
 
@@ -22,7 +22,7 @@ public class HealthComponent : MonoBehaviour
         CurrentHp = MaxHp;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void TakeDamage(int amount, bool isBlocked)
+    public void TakeDamage(int amount, bool isBlocked, bool isCritical)
     {
         if (IsDead) return;
 
@@ -33,7 +33,7 @@ public class HealthComponent : MonoBehaviour
         }
 
         CurrentHp -= amount;
-        OnHit?.Invoke();
+        OnHit?.Invoke(isCritical);
 
         if (CurrentHp <= 0)
         {
@@ -45,6 +45,8 @@ public class HealthComponent : MonoBehaviour
     {
         CurrentHp = 0;
         gameObject.layer = LayerMask.NameToLayer("Dead Body");
+        var collider = gameObject.GetComponent<BoxCollider2D>();
+        collider.isTrigger = true;
         OnDeath?.Invoke();
     }
 }

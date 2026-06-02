@@ -9,7 +9,7 @@ public class ProgressController
 
     private float timer;
 
-    private bool isRunning;
+    public bool isRunning {  get; private set; }
 
     private Action onComplete;
 
@@ -20,6 +20,11 @@ public class ProgressController
 
     public void Begin(float duration, Action onComplete)
     {
+        if (isRunning)
+        {
+            return;
+        }
+
         this.duration = duration;
         this.onComplete = onComplete;
 
@@ -52,8 +57,10 @@ public class ProgressController
     public void Cancel()
     {
         isRunning = false;
-
-        progressUI.Hide();
+        if (progressUI)
+        {
+            progressUI.Hide();
+        }
     }
 
     private void Complete()

@@ -10,8 +10,9 @@ public class LootComponent : MonoBehaviour, IInteractable, IHoverable
     private LootTable lootTable;
     [SerializeField]
     private HealthComponent healthComponent;
-    private IInteractionPresenter presenter;
-    public float HoldTime => 0f;
+    private CursorManager cursorManager;
+    protected IInteractionPresenter presenter;
+    public virtual float HoldTime { get; set; } 
 
     public ItemContainer container {  get; private set; }
     public bool isAlive {  get; private set; }
@@ -19,11 +20,21 @@ public class LootComponent : MonoBehaviour, IInteractable, IHoverable
 
     private void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         container = new ItemContainer();
         container.Init(lootTable.GenerateLoot());
+        if (healthComponent != null)
+        {
+            healthComponent.OnDeath += SetIsAlive;
+        }
     }
 
-    public void Interact()
+    private void SetIsAlive()
+    {
+        isAlive = false;
+    }
+
+    public virtual void Interact()
     {
         if (healthComponent.IsDead)
         {
@@ -36,19 +47,27 @@ public class LootComponent : MonoBehaviour, IInteractable, IHoverable
 
     public void OnHoverExit()
     {
+        if (!isAlive)
+        {
+            cursorManager.SetDefaultCursor();
+        }
         spriteRenderer.color = Color.white;
     }
 
     public void OnHoverEnter()
     {
+        if (!isAlive)
+        {
+            cursorManager.SetInteractionCursor();
+        }
         spriteRenderer.color = Color.gray;
     }
 
-    public void Init(IInteractionPresenter presenter, bool isAlive)
+    public virtual void Init(IInteractionPresenter presenter, bool isAlive, CursorManager cursorManager)
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         this.isAlive = isAlive;
         this.presenter = presenter;
+        this.cursorManager = cursorManager;
     }
 
     public void InitializeLootItems(List<InventoryItem> items)

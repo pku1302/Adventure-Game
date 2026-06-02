@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8820715741bc1428a9200891a080a4, type: 3}
+  m_Name: Stamina Rune -epic
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
+  itemName: "\uC2A4\uD14C\uBBF8\uB098\uB8EC"
+  description: "\uCD5C\uB300 \uC2A4\uD14C\uBBF8\uB098\uB97C \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4"
+  icon: {fileID: -135091025696304614, guid: 7b1e1805539bd2a49909ad42f50ecdde, type: 3}
+  rarity: 2
+  itemType: 0
+  maxStack: 1
+  sellPrice: 0
+  buyPrice: 0
+  attack: 0
+  defense: 0
+  stamina: 5
+  speed: 0
+  id: sta
+  nextEnhanceItem: {fileID: 11400000, guid: d7c3b31e149f13c48be9339243662562, type: 2}
+  enhanceCost:
+    material: {fileID: 11400000, guid: b244b423e9868cd4a8437048e50369c2, type: 2}
+    materialCount: 1
+    gold: 30

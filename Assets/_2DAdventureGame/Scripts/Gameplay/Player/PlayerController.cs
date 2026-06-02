@@ -18,13 +18,17 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector2 moveDirection = new Vector2(1, 0);
     private Vector2 mouseDirection;
-    private PlayerStats stats;
+    private Vector2 rollDirection;
     private StatusEffectManager statusEffectManager;
     private InteractionController interactionController;
     private ProgressController progressController;
+    private ProgressController reloadProgressController;
     private PlayerStamina stamina;
     private GameManager gameManager;
     private PlayerItem playerItem;
+    private PlayerWeapon weapon;
+    private AudioSource audioSource;
+    private PlayerHealth health;
 
     [Header("Player")]
     public InputAction MoveAction; // WASD
@@ -34,23 +38,38 @@ public class PlayerController : MonoBehaviour
     public InputAction RunAction; // Shift
     public InputAction MouseRightAction; // Mouse Right
 
+    public AudioClip snareSFX;
+
     public bool IsSnared { get; private set; }
     public bool IsRunning { get; private set; }
     public bool IsInteracting { get; private set; }
+    public bool IsDead { get; private set; }
+    public bool ReservedLaunch { get; private set; }
+    public PlayerStats stats { get; private set; }
 
     public Vector2 move { get; private set; }
 
     private bool isKnockback = false;
 
-    public void Init(InteractionController itc, PlayerItem playerItem, ProgressController progressController, GameManager gameManager)
+    public void Init(InteractionController itc, PlayerItem playerItem, ProgressController progressController, GameManager gameManager, PlayerStats stats, ProgressController reloadProgressController)
     {
         interactionController = itc;
         this.playerItem = playerItem;
         this.progressController = progressController;
+        this.reloadProgressController = reloadProgressController;
         this.gameManager = gameManager;
+        this.stats = stats;
     }
 
-    void Start()
+    private void OnDestroy()
+    {
+        if (progressController != null)
+        {
+            progressController.Cancel();
+        }
+    }
+
+    void Awake()
     {
         MoveAction.Enable();
         LaunchAction.Enable();
@@ -59,15 +78,19 @@ public class PlayerController : MonoBehaviour
         RunAction.Enable();
         MouseRightAction.Enable();
 
-        stats = GetComponent<PlayerStats>();
+        weapon = GetComponent<PlayerWeapon>();
         dash = GetComponent<PlayerDash>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         statusEffectManager = GetComponent<StatusEffectManager>();
         stamina = GetComponent<PlayerStamina>();
+        audioSource = GetComponent<AudioSource>();
+        health = GetComponent<PlayerHealth>();
         dash.OnDashStart += () => animator.SetTrigger("Roll");
 
+        health.OnDeath += Dead;
         IsRunning = false;
+        ReservedLaunch = false;
     }
 
     // Update is called once per frame
@@ -76,11 +99,15 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         worldPos.z = 0f;
-        if (!dash.IsDashing)
-            mouseDirection = (Vector2)(worldPos - transform.position).normalized;
+        mouseDirection = (Vector2)(worldPos - transform.position).normalized;
 
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
         SetAnimation();
+
+        if (IsDead)
+        {
+            return;
+        }
 
         move = MoveAction.ReadValue<Vector2>();
 
@@ -102,27 +129,27 @@ public class PlayerController : MonoBehaviour
 
         if (RollAction.WasPressedThisFrame())
         {
+            rollDirection = mouseDirection;
             dash.TryDash();
             playerItem.CancelUse();
         }
 
         progressController.Tick();
+        reloadProgressController.Tick();
 
         if (InteractionAction.IsPressed())
         {
             IInteractable target = interactionController.BeginInteract();
-            IsInteracting = true;
+            if (target != null)
+            {
+                IsInteracting = true;
+            }
         }
 
-        if (InteractionAction.WasReleasedThisFrame())
+        if (IsInteracting && InteractionAction.WasReleasedThisFrame())
         {
-            interactionController.CancleInteract();
+            interactionController.CancelInteract();
             IsInteracting = false;
-        }
-
-        if (MouseRightAction.WasPressedThisFrame() && playerItem.isUsing)
-        {
-            playerItem.CancelUse();
         }
     }
     private void FixedUpdate()
@@ -134,6 +161,12 @@ public class PlayerController : MonoBehaviour
         Move(move);
     }
 
+    private void Dead()
+    {
+        IsDead = true;
+        animator.SetTrigger("Dead");
+    }
+
     public bool IsGamePlay()
     {
         return gameManager.CurrentState == GameState.GamePlay;
@@ -142,23 +175,28 @@ public class PlayerController : MonoBehaviour
     public void Roll()
     {
         float dashSpeed = dash.GetDashSpeed();
-        Vector2 position = (Vector2)rigidbody2d.position + mouseDirection * dashSpeed * Time.fixedDeltaTime;
+        Vector2 position = (Vector2)rigidbody2d.position + rollDirection * dashSpeed * Time.fixedDeltaTime;
         rigidbody2d.MovePosition(position);
+        weapon.SetCoolTime();
     }
 
     public void ToggleIsSnared()
     {
         IsSnared = !IsSnared;
+        if (IsSnared)
+        {
+            audioSource.PlayOneShot(snareSFX);
+        }
     }
 
 
     public void Move(Vector2 move)
     {
-        if (dash.IsDashing || isKnockback || IsSnared || IsInteracting || gameManager.CurrentState != GameState.GamePlay)
+        if (dash.IsDashing || isKnockback || IsSnared || IsInteracting || gameManager.CurrentState != GameState.GamePlay || IsDead)
         {
             return;
         }
-        float speed = stats.baseMoveSpeed;
+        float speed = stats.totalMoveSpeed;
 
         if (IsRunning &&
             !playerItem.isUsing &&
@@ -198,21 +236,36 @@ public class PlayerController : MonoBehaviour
 
     public void Launch()
     {
-        if (IsInteracting || gameManager.CurrentState != GameState.GamePlay)
+        if (IsInteracting || gameManager.CurrentState != GameState.GamePlay || stamina.isExhausted() || IsSnared || IsDead)
         {
             return;
         }
-        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.1f, Quaternion.identity);
-        Projectile projectile = projectileObject.GetComponent<Projectile>();
-        projectile.Launch(mouseDirection, 300);
+
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        float progress = info.normalizedTime;
+
+        if (dash.IsDashing)
+        {
+            if (progress >= 0.5)
+            {
+                ReservedLaunch = true;
+            }
+            return;
+        }
+
+        weapon.Fire(mouseDirection);
         animator.SetTrigger("Launch");
+    }
+
+    public void SetReservedLaunch()
+    {
+        ReservedLaunch = false;
     }
 
     public void ApplyKnockback(Vector2 dir, float force, float duration)
     {
         StartCoroutine(Knockback(dir, force, duration));
     }
-
     IEnumerator Knockback(Vector2 dir, float force, float duration)
     {
         isKnockback = true;
@@ -223,6 +276,9 @@ public class PlayerController : MonoBehaviour
             dash.EndDash();
 
         yield return new WaitForSeconds(duration);
+
+        rigidbody2d.linearVelocity =
+            Vector2.zero;
 
         isKnockback = false;
     }

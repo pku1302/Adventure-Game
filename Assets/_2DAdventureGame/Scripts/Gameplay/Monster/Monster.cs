@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-[RequireComponent (typeof(Monster))]
+
 public class Monster : MonoBehaviour
 {
     [SerializeField] private MonsterData data;
@@ -11,7 +11,11 @@ public class Monster : MonoBehaviour
     public AudioClip footstepR;
     public AudioClip hitSound;
     public AudioClip deadSound;
+    public AudioClip deadSound2;
     public AudioClip attackSound;
+    public AudioClip attackSound2;
+    public AudioClip guardSound;
+
     public LootComponent Loot { get; private set; }
 
     private bool isLeft = false;
@@ -27,15 +31,12 @@ public class Monster : MonoBehaviour
 
     void PlayFootStep()
     {
-        if (executed) return;
-        executed = true;
-
-        if (isLeft)
+        if (isLeft && footstepR != null)
         {
             audioSource.PlayOneShot(footstepR);
             isLeft = false;
         }
-        else
+        else if (footstepL != null)
         {
             audioSource.PlayOneShot(footstepL);
             isLeft = true;
@@ -52,9 +53,24 @@ public class Monster : MonoBehaviour
         audioSource.PlayOneShot(deadSound);
     }
 
+    void PlayDeadSound2()
+    {
+        audioSource.PlayOneShot(deadSound2);
+    }
+
     void PlayAttackSound()
     {
         audioSource.PlayOneShot(attackSound);
+    }
+
+    void PlayPrepareAttackSound()
+    {
+        audioSource.PlayOneShot(attackSound2);
+    }
+
+    void PlayGuardSound()
+    {
+        audioSource.PlayOneShot(guardSound);
     }
 
     void PreventDuplicate()

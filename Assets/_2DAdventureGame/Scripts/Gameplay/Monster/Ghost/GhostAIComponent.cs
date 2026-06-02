@@ -15,9 +15,10 @@ public class GhostAIComponent : AIComponent
         attackState = new AttackState(this, Attack);
     }
 
-    void HandleHit()
+    void HandleHit(bool isCritical)
     {
-        if(!Attack.isAttacking)
+        Hit.TakeHit(isCritical);
+        if (!Attack.isAttacking)
         {
             stateMachine.ChangeState(hitState);
         }
@@ -93,7 +94,7 @@ public class GhostAIComponent : AIComponent
 
     bool TryChase()
     {
-        if (target != null)
+        if (IsPlayerInDetectRange())
         {
             stateMachine.ChangeState(chaseState);
             return true;

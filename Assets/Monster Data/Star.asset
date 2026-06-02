@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0dea751c2200444941326ae7e3a30c, type: 3}
   m_Name: Star
   m_EditorClassIdentifier: Assembly-CSharp::MonsterData
-  maxHp: 10
+  maxHp: 50
   moveSpeed: 1
   wanderRadius: 5
   attackRange: 2

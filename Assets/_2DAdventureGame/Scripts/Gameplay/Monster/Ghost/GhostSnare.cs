@@ -13,15 +13,13 @@ public class GhostSnare : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        Destroy(gameObject, 4f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.magnitude > 100.0f)
-        {
-            Destroy(gameObject);
-        }
+
     }
 
     public void Launch(Vector2 dir, float force)
@@ -44,10 +42,7 @@ public class GhostSnare : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
         Destroy(gameObject);
     }
 }

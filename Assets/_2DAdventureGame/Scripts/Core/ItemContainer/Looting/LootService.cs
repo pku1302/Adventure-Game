@@ -24,6 +24,12 @@ public class LootService
             currentLootRoutine = runner.StartCoroutine(LootCoroutine(target, lootTime, onComplete));
     }
 
+    public void StopLoot()
+    {
+        if (currentLootRoutine != null)
+            runner.StopCoroutine(currentLootRoutine);
+    }
+
     IEnumerator LootCoroutine(LootComponent target, float lootTime, Action onComplete)
     {
         float timer = 0f;

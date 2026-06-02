@@ -27,7 +27,7 @@ public class PlayerDash : MonoBehaviour
 
     public void TryDash()
     {
-        if (IsDashing || player.IsSnared || !player.IsGamePlay()) return;
+        if (IsDashing || player.IsSnared || !player.IsGamePlay() || stamina.isExhausted() || player.IsDead) return;
 
         if (stamina.TryUseStamina(dashCost))
         {
@@ -39,5 +39,10 @@ public class PlayerDash : MonoBehaviour
     public void EndDash()
     {
         IsDashing = false;
+        if (player.ReservedLaunch)
+        {
+            player.Launch();
+            player.SetReservedLaunch();
+        }
     }
 }

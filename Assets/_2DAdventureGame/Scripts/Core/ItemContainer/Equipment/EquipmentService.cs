@@ -38,6 +38,9 @@ public class EquipmentService
         if (item == null || item.data is not EquipmentData e)
             return false;
 
+        if (inventory.IsFull())
+            return false;
+
         equipment.Unequip(equipIndex);
 
         inventory.AddItem(item.data, 1);
@@ -54,6 +57,7 @@ public class EquipmentService
     {
         stat.totalAttack = stat.baseAttack;
         stat.totalDefense = stat.baseDefense;
+        stat.totalMoveSpeed = stat.baseMoveSpeed;
 
         for(int i = 0; i < equipment.GetSlotCount(); i++)
         {
@@ -62,6 +66,8 @@ public class EquipmentService
             EquipmentData equipmentData = (EquipmentData)e.data;
             stat.totalAttack += equipmentData.attack;
             stat.totalDefense += equipmentData.defense;
+            stat.totalMoveSpeed += equipmentData.speed;
+            stat.RecalculateStamina(equipmentData.stamina);
         }
     }
 }

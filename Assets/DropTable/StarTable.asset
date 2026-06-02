@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: StarTable
   m_EditorClassIdentifier: Assembly-CSharp::LootTable
   lootEntries:
-  - item: {fileID: 11400000, guid: 09bd94c6ac22d124fa30b48d09d4d014, type: 2}
+  - item: {fileID: 11400000, guid: 606aaeddc4e558344b6bbaa4457740d2, type: 2}
     dropChance: 1
-    minAmount: 2
-    maxAmount: 2
-  - item: {fileID: 11400000, guid: 8c3d1f2eb4d284441a318ac086a8f31f, type: 2}
-    dropChance: 1
+    minAmount: 1
+    maxAmount: 1
+  - item: {fileID: 11400000, guid: 7b50697eca51f6b4a90e06b8a15715f8, type: 2}
+    dropChance: 0.2
     minAmount: 1
     maxAmount: 1

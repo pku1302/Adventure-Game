@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class UIManager : MonoBehaviour
@@ -10,12 +11,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LootUI lootUI;
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private EnhanceUI enhanceUI;
-    [SerializeField] private ConfirmUI confirmUI;
     [SerializeField] private DungeonSelectUI dungeonSelectUI;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private ProgressUI progressUI;
+    [SerializeField] private Image tutorialUI;
+    [SerializeField] private UIAudioPlayer uiAudioPlayer;
+    [SerializeField] public ConfirmUI confirmUI;
 
-    public ProgressUI ProgressUI {  get { return progressUI; } }
+    public ProgressUI ProgressUI { get { return progressUI; } }
 
     private void Awake()
     {
@@ -35,6 +38,7 @@ public class UIManager : MonoBehaviour
         shopUI.gameObject.SetActive(false);
         enhanceUI.gameObject.SetActive(false);
         dungeonSelectUI.gameObject.SetActive(false);
+        CloseTutorial();
         gameManager.ChangeState(GameState.GamePlay);
     }
 
@@ -56,6 +60,21 @@ public class UIManager : MonoBehaviour
         gameManager.ChangeState(GameState.GamePlay);
     }
 
+    public void OpenTutorial()
+    {
+        if (!tutorialUI.gameObject.activeSelf)
+        {
+            uiAudioPlayer.PlayMap();
+            tutorialUI.gameObject.SetActive(true);
+            gameManager.ChangeState(GameState.UI);
+        }
+    }
+
+    public void CloseTutorial()
+    {
+        tutorialUI.gameObject.SetActive(false);
+    }
+
     public void OpenShop(IItemSlotPresenter presenter, ShopContainer shop, Inventory inventory, IShopPresenter shopPresenter)
     {
         shopUI.Init(presenter, shop, inventory, shopPresenter);
@@ -64,17 +83,17 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void OpenConfirmPopup(string text, Action yesAction, Action noAction = null)
+    public void OpenConfirmPopup(string text, bool isCancelActive, Action yesAction, Action noAction = null)
     {
-        confirmUI.Open(text, yesAction, noAction);
+        confirmUI.Open(text, isCancelActive, yesAction, noAction);
         gameManager.ChangeState(GameState.UI);
 
     }
 
     public void OpenEnhance(IItemSlotPresenter presenter, Inventory inventory, IEnhancePresenter enhancePresenter)
     {
-        enhanceUI.Init(presenter, inventory, enhancePresenter);
         enhanceUI.gameObject.SetActive(true);
+        enhanceUI.Init(presenter, inventory, enhancePresenter);
         gameManager.ChangeState(GameState.UI);
 
     }

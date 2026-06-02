@@ -10,8 +10,8 @@ public class GameRoot : MonoBehaviour
 
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GoldManager goldManager;
-    [SerializeField] private PlayerStats playerStats;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private CursorManager cursorManager;
 
     private GamePresenter m_presenter;
     private ShopPresenter m_shopPresenter;
@@ -19,6 +19,7 @@ public class GameRoot : MonoBehaviour
     private PlayerItem m_playerItem;
     private DeathHandler m_deathHandler;
     private LootService m_lootService;
+    private PlayerStats m_playerStats;
 
     public PlayerItem PlayerItem => m_playerItem;
     public GamePresenter GamePresenter => m_presenter;
@@ -26,6 +27,8 @@ public class GameRoot : MonoBehaviour
     public ShopPresenter ShopPresenter => m_shopPresenter;
     public DeathHandler DeathHandler => m_deathHandler;
     public LootService LootService => m_lootService;
+    public PlayerStats PlayerStats => m_playerStats;
+    public CursorManager CursorManager => cursorManager;
 
     private void Awake()
     {
@@ -46,7 +49,9 @@ public class GameRoot : MonoBehaviour
         var inventory = new Inventory(playerItem);
         var equipment = new EquipmentContainer();
         var sceneService = new SceneService();
+        var playerStat = new PlayerStats();
 
+        m_playerStats = playerStat;
         m_progressController = progressController;
         m_playerItem = playerItem;
 
@@ -67,11 +72,11 @@ public class GameRoot : MonoBehaviour
             lootService,
             equipmentService,
             equipment,
-            playerStats,
+            playerStat,
             enhanceService,
             sceneService
          );
-        var deathHandler = new DeathHandler(inventory, equipment, sceneService);
+        var deathHandler = new DeathHandler(inventory, equipment, sceneService, uiManager.confirmUI, uiManager);
         m_deathHandler = deathHandler;
 
         inputManager.Init(presenter);

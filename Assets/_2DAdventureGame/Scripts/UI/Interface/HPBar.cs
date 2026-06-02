@@ -1,6 +1,7 @@
+using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class HPBar : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class HPBar : MonoBehaviour
     public Image healHPBar;
     public Image poisonLine;
     public TMP_Text CurrentHP;
-    public PlayerStats playerStats;
 
     private Color backupColor;
     private HealBuff currentBuff;
@@ -16,6 +16,10 @@ public class HPBar : MonoBehaviour
     private float maxHP;
 
     private void Start()
+    {
+    }
+
+    public void Init(PlayerStats playerStats)
     {
         maxHP = playerStats.maxHP;
         backupColor = currentHPBar.color;
@@ -61,12 +65,16 @@ public class HPBar : MonoBehaviour
         poisonLine.gameObject.SetActive(true);
         currentPoisonDebuff = effect;
         float width = currentHPBar.rectTransform.rect.width;
-        float x = (1f- (effect.GetCurrentPoisonAmount() / maxHP + (1 - currentHPBar.fillAmount))) * width;
-        poisonLine.rectTransform.anchoredPosition = new Vector2(x, 0f);
+        float poisonLinePosition = (1f- (effect.GetCurrentPoisonAmount() / maxHP + (1 - currentHPBar.fillAmount))) * width;
+        poisonLine.rectTransform.anchoredPosition = new Vector2(poisonLinePosition, 0f);
 
-        if (x <= 0)
+        if (poisonLinePosition <= 0)
         {
             currentHPBar.color = effect.data.color;
+        }
+        else
+        {
+            currentHPBar.color = backupColor;
         }
     }
 

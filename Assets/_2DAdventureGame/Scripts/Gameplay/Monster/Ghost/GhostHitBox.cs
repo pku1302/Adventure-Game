@@ -14,7 +14,7 @@ public class GhostHitBox : MonoBehaviour
             var health = collision.GetComponent<PlayerHealth>();
             if (health != null)
             {
-                health.TakeDamage(damage);
+                health.TakeDamage(damage, DamageType.Normal);
                 hasHit = true;
             }
         }

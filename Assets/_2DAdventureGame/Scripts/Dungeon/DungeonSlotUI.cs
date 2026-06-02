@@ -20,6 +20,9 @@ public class DungeonSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField]
     private TMP_Text difficultyText;
 
+    [SerializeField]
+    private Image image;
+
     private IDungeonPresenter dungeonPresenter;
 
     private void Start()
@@ -37,11 +40,13 @@ public class DungeonSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         dungeonSelectUI.ShowDungeonInfo(dungeonData);
+        image.color = new Color(1, 1, 1, 0.4f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         dungeonSelectUI.HideDungeonInfo();
+        image.color = new Color(1, 1, 1, 0.7f);
     }
 
     public void OnPointerClick(PointerEventData eventData)

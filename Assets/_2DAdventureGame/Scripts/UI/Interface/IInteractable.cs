@@ -1,8 +1,9 @@
 using UnityEngine;
+using System;
 
 public interface IInteractable
 {
-    float HoldTime { get;}
+    float HoldTime { get; set; }
     void OnHoverExit();
     void OnHoverEnter();
     Transform GetTransform();

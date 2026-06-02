@@ -60,7 +60,7 @@ public class InteractionController
          () =>
          {
              currentTarget.Interact();
-             CancleInteract();
+             CancelInteract();
          });
 
         return target;
@@ -75,7 +75,7 @@ public class InteractionController
 
         if (currentTarget == null)
         {
-            CancleInteract();
+            CancelInteract();
             return;
         }
 
@@ -83,7 +83,7 @@ public class InteractionController
 
     }
 
-    public void CancleInteract()
+    public void CancelInteract()
     {
         isHolding = false;
 

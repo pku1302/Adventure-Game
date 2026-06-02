@@ -9,7 +9,6 @@ public class InventoryForEnhanceUI : ItemContainerUI
         ClearSlots();
         this.enhancePresenter = enhancePresenter;
         base.Init(presenter, container);
-
     }
 
     protected void ClearSlots()
@@ -40,6 +39,11 @@ public class InventoryForEnhanceUI : ItemContainerUI
             ui.Init(i, presenter, enhancePresenter, container);
             slotUIs.Add(ui);
         }
+    }
+
+    public void RefreshUI()
+    {
+        UpdateUI();
     }
 
     protected override void UpdateUI()

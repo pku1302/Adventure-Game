@@ -14,6 +14,10 @@ public class StopState : IState
 
     public void Enter()
     {
+        if (ai.target == null)
+        {
+            Debug.Log("Asfd");
+        }
         direction = (ai.target.position - ai.transform.position).normalized;
         ai.Movement.StopMonster();
         ai.Animation.SetStop(direction);

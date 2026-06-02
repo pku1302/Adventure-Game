@@ -23,11 +23,15 @@ public class ShopService
             return false;
         }
 
+        if (inventory.IsFull())
+        {
+            return false;
+        }
+
         int price = GetBuyPrice(shop, item);
 
         if (playerGold.gold < price)
         {
-            Debug.Log("금액 부족");
             return false;
         }
 
@@ -49,7 +53,7 @@ public class ShopService
         )
     {
         return Mathf.RoundToInt(
-            item.data.sellPrice * 2f
+            item.data.buyPrice
         );
     }
 

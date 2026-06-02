@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class GoldUI : MonoBehaviour
 {
-    public GoldManager goldManager;
+    private GoldManager goldManager;
     public TextMeshProUGUI goldText;
 
     private void Start()
     {
-        Refresh(goldManager.gold);
-        goldManager.onGoldChanged += Refresh;
+        goldManager = FindFirstObjectByType<GoldManager>();
+        if (goldManager != null)
+        {
+            Refresh(goldManager.gold);
+            goldManager.onGoldChanged += Refresh;
+        }
     }
 
     private void OnDestroy()

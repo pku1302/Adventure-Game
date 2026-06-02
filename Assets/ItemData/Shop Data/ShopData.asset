@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: ShopData
   m_EditorClassIdentifier: Assembly-CSharp::ShopData
   shopItems:
-  - item: {fileID: 11400000, guid: 09bd94c6ac22d124fa30b48d09d4d014, type: 2}
-    price: 3
+  - item: {fileID: 11400000, guid: 3155367812ec9c0468af8a8bbf28e70d, type: 2}
+  - item: {fileID: 11400000, guid: 3155367812ec9c0468af8a8bbf28e70d, type: 2}
+  - item: {fileID: 11400000, guid: b994df0a0d8fc5643b79d1aa309d0c55, type: 2}

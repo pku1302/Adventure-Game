@@ -13,6 +13,17 @@ public class Inventory : ItemContainer
         player.OnUseEnd += UseItemComplete;
     }
 
+    public bool IsFull()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] == null)
+                return false;
+        }
+
+        return true;
+    }
+
     public void EquipItem(InventoryItem equip, int index)
     {
         if (equip.data is not EquipmentData e)

@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class StatueAttackComponent : AttackComponent
 {
-    public Collider2D hitbox;
+    [SerializeField]
+    private Collider2D hitbox;
+    [SerializeField]
+    private HealthComponent health;
     private float ramAttackCooldown;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,12 +15,18 @@ public class StatueAttackComponent : AttackComponent
         Init();
         hitbox.enabled = false;
         ramAttackCooldown = 0f;
+        health.OnDeath += OffTrigger; 
     }
 
     // Update is called once per frame
     void Update()
     {
         ramAttackCooldown -= Time.deltaTime;
+    }
+
+    private void OffTrigger()
+    {
+        hitbox.enabled = false;
     }
 
     public void RamAttack()
@@ -60,10 +69,10 @@ public class StatueAttackComponent : AttackComponent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.layer == LayerMask.NameToLayer("Character"))
         {
             PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(monster.Data.attackDamage);
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(monster.Data.attackDamage, DamageType.Normal);
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             hitbox.enabled = false;
 

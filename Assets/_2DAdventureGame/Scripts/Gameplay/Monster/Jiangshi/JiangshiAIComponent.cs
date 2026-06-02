@@ -66,8 +66,10 @@ public class JiangshiAIComponent : AIComponent
     }
 
 
-    void HandleHit()
+    void HandleHit(bool isCritical)
     {
+        Movement.IncreaseMoveSpeed(0.1f);
+        Hit.TakeHit(isCritical);
         stateMachine.ChangeState(hitState);
         stateChangeTimer = Monster.Data.attackSpeed / 8;
         currentAngry = AngryGage;
@@ -128,7 +130,7 @@ public class JiangshiAIComponent : AIComponent
 
     bool TryChase()
     {
-        if (target != null)
+        if (IsPlayerInDetectRange())
         {
             stateMachine.ChangeState(chaseState);
             currentAngry = AngryGage;

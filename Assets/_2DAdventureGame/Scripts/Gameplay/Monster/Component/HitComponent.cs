@@ -7,6 +7,7 @@ public class HitComponent : MonoBehaviour
     private AIComponent ai;
     private AudioSource audioSource;
     public AudioClip[] hitSFXs;
+    public AudioClip criticalSFX;
     public GameObject hitEffectPrefab;
     public GameObject hitEffectPrefab2;
     public GameObject hitEffectPrefab3;
@@ -27,16 +28,20 @@ public class HitComponent : MonoBehaviour
     {     
     }
 
-    public void TakeHit()
+    public void TakeHit(bool isCritical)
     {       
         AudioClip clip = hitSFXs[Random.Range(0, hitSFXs.Length)];
         audioSource.PlayOneShot(clip);
-        SpawnHitEffect();
         GameObject effect1 = Instantiate(hitEffectPrefab2, ai.transform.position, Quaternion.identity);
         GameObject effect2 = Instantiate(hitEffectPrefab3, ai.transform.position, Quaternion.identity);
         GameObject effect3 = Instantiate(hitEffectPrefab4, ai.transform.position, Quaternion.identity);
         effect1.AddComponent<FadeOut>();
         effect2.AddComponent<FadeOut>();
+        
+        if (isCritical)
+        {
+            SpawnHitEffect();
+        }
         Destroy(effect1, 0.3f);
         Destroy(effect2, 0.05f);
     }
@@ -44,7 +49,7 @@ public class HitComponent : MonoBehaviour
     public void SpawnHitEffect()
     {
         Vector3 center = transform.position;
-        
+        audioSource.PlayOneShot(criticalSFX);
 
         for (int i = 0; i< effectCount; i++)
         {

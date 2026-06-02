@@ -24,18 +24,5 @@ public class EnhanceSlotUI : ItemSlotUI
         }
     }
 
-    public override void SetSlot(InventoryItem item, int index)
-    {
-        if (item == null) return;
-        if (item.data is not EquipmentData e || e.nextEnhanceItem == null)
-        {
-            return;
-        }
 
-        slotItem = item;
-        this.index = index;
-
-        icon.sprite = slotItem.data.icon;
-        background.color = RarityColorUtility.GetColor(e.rarity);
-    }
 }

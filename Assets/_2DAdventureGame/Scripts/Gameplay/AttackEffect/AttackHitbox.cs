@@ -16,7 +16,7 @@ public class AttackHitbox : MonoBehaviour
             var statusManager = collision.GetComponent<StatusEffectManager>();
             if (health != null)
             {
-                health.TakeDamage(damage);
+                health.TakeDamage(damage, DamageType.Normal);
                 hasHit = true;
             }
             if (statusManager != null)

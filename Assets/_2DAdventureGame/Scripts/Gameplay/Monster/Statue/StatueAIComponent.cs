@@ -4,35 +4,41 @@ using UnityEngine;
 public class StatueAIComponent : AIComponent
 {
     private float stateChangeTimer;
-    private int berserkGage = 0;
+    private float berserkGage = 0;
     private float flashlightGage = 0;
     private AttackState attackState;
     private bool isAttacking;
     private bool isInFlashlight = false;
+    private bool isStareMode = false;
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip berserkSFX;
 
     public int maxAngry = 3;
     public bool isBerserk = false;
-    public int maxBerserk = 5;
+    public int maxBerserk = 10;
     public Animator animator;
 
-    public StatueAttackComponent Attack { get; private set; }
+    [SerializeField]
+    private StatueAttackComponent Attack;
 
     private void Awake()
     {
         Monster = GetComponent<Monster>();
-        Attack = GetComponent<StatueAttackComponent>();
         Init();
         attackState = new AttackState(this, Attack);
     }
 
-    void HandleHit()
+    void HandleHit(bool isCritical)
     {
+        Hit.TakeHit(isCritical);
         stateMachine.ChangeState(hitState);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         stateMachine.Initialize(wanderState);
         Health.OnHit += HandleHit;
         stateChangeTimer = 0.1f;
@@ -66,10 +72,10 @@ public class StatueAIComponent : AIComponent
     {
         if (TryDead()) return;
         if (TryBerserk()) return;
+        //if (TryRun()) return;
         if (TryAttack()) return;
-        if (TryRun()) return;
-        if (TryStop()) return;
         if (TryChase()) return;
+        if (TryStop()) return;
 
         TryWander();
     }
@@ -89,6 +95,7 @@ public class StatueAIComponent : AIComponent
     {
         if (!isBerserk && berserkGage >= maxBerserk)
         {
+            audioSource.PlayOneShot(berserkSFX);
             isBerserk = true;
             stateMachine.ChangeState(new BerserkState(this));
             return true;
@@ -98,7 +105,7 @@ public class StatueAIComponent : AIComponent
 
     bool TryAttack()
     {
-        if (IsPlayerInAttackRange())
+        if (IsPlayerInAttackRange() && isBerserk)
         {
             stateMachine.ChangeState(attackState);
             isAttacking = true;
@@ -111,9 +118,10 @@ public class StatueAIComponent : AIComponent
 
     bool TryRun()
     {
-        if (flashlightGage > 1.5f && !isBerserk)
+        if (flashlightGage > 0.5f && !isBerserk)
         {
             stateMachine.ChangeState(wanderState);
+            isStareMode = false;
             return true;
         }
 
@@ -127,21 +135,33 @@ public class StatueAIComponent : AIComponent
 
     bool TryStop()
     {
-        if (isBerserk || target == null)
+        if (isBerserk)
         {
             return false;
         }
-        else 
+        if (IsPlayerInDetectRange() || isStareMode)
         {
+            isStareMode = true;
             stateMachine.ChangeState(stopState);
-            berserkGage += 1;
+            berserkGage += 1f;
             return true;
         }
+
+        return false;
     }
 
     bool TryChase()
     {
+        if (targetHealth.isDead)
+        {
+            return false;
+        }
         if (isBerserk)
+        {
+            stateMachine.ChangeState(chaseState);
+            return true;
+        }
+        else if (isStareMode && !IsPlayerInStareRange())
         {
             stateMachine.ChangeState(chaseState);
             return true;
@@ -173,5 +193,22 @@ public class StatueAIComponent : AIComponent
         isInFlashlight = true;
         flashlightGage += Time.fixedDeltaTime;
         flashlightGage = Mathf.Clamp(flashlightGage, 0f, 5f);
+    }
+
+    private bool IsPlayerInStareRange()
+    {
+        if (target == null)
+        {
+            return false;
+        }
+
+        if (targetHealth.isDead)
+        {
+            return false;
+        }
+
+        float distance = Vector2.Distance(target.position, transform.position);
+
+        return distance <= Monster.Data.detectRange * 2;
     }
 }

@@ -14,7 +14,7 @@ public class HoverDetector : MonoBehaviour
 
     private void Start()
     {
-        layerMask = ~LayerMask.GetMask("Flashlight", "Monster Detection");
+        layerMask = LayerMask.GetMask("Monster", "NPC", "Dead Body");
     }
 
     // Update is called once per frame
@@ -22,16 +22,24 @@ public class HoverDetector : MonoBehaviour
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Collider2D hit = Physics2D.OverlapPoint(worldPos, layerMask);
-
-        if (hit != null)
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPos, layerMask);
+        bool wasHit = false;
+        foreach (var hit in hits)
         {
-            var target = hit.GetComponent<IInteractable>();
-            CurrentTarget?.OnHoverExit();
-            CurrentTarget = target;
-            CurrentTarget?.OnHoverEnter();
+            if (hit.TryGetComponent(out IInteractable target))
+            {
+                if (target == CurrentTarget)
+                    return;
+
+                CurrentTarget?.OnHoverExit();
+                CurrentTarget = target;
+                CurrentTarget?.OnHoverEnter();
+                wasHit = true;
+                break;
+            }
         }
-        else
+
+        if (CurrentTarget != null && !wasHit)
         {
             CurrentTarget?.OnHoverExit();
             CurrentTarget = null;

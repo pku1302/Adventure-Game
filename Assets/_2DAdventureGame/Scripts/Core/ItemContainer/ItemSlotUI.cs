@@ -13,6 +13,7 @@ public abstract class ItemSlotUI : MonoBehaviour
     [SerializeField] protected Image icon;
     [SerializeField] protected Image background;
     [SerializeField] protected TMP_Text countText;
+    [SerializeField] private RectTransform tooltipAnchor;
 
     protected ItemContainer container;
     protected InventoryItem slotItem; // ½½·Ô¿¡ ´ã±ä ¾ÆÀÌÅÛ
@@ -22,6 +23,7 @@ public abstract class ItemSlotUI : MonoBehaviour
     protected
     private bool isHovering = false;
     private static int splitAmount;
+    protected RectTransform iconRect;
     protected static bool isSplitMode;
 
     public int GetSlotIndex()
@@ -44,6 +46,7 @@ public abstract class ItemSlotUI : MonoBehaviour
     {
         slotItem = data;
         this.index = index;
+        iconRect = icon.GetComponent<RectTransform>();  
 
         if (slotItem != null)
         {
@@ -66,18 +69,18 @@ public abstract class ItemSlotUI : MonoBehaviour
     }
 
     // È£¹ö ½Ã ÅøÆÁ
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (isHovering) return;
 
         isHovering = true;
 
         if (TooltipUI.Instance != null && slotItem != null)
-            TooltipUI.Instance.Show(slotItem.data, transform.position);
+            TooltipUI.Instance.Show(slotItem.data, tooltipAnchor, this);
     }
 
     // È£¹ö ¾Æ¿ô ½Ã ÅøÆÁ OFF
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         isHovering = false;
 
@@ -159,5 +162,6 @@ public abstract class ItemSlotUI : MonoBehaviour
     {
         if (slotItem == null)
             return;
+
     }
 }

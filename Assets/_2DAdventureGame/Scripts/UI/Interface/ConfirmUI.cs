@@ -1,19 +1,31 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ConfirmUI : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text messageText;
-    
+    [SerializeField]
+    private Button cancelButton;
+
     private Action onYes;
     private Action onNo;
 
-    public void Open(string text, Action yesAction, Action noAction = null)
+    public void Open(string text, bool isCancelActive, Action yesAction, Action noAction = null)
     {
         gameObject.SetActive(true);
         messageText.text = text;
+
+        if (isCancelActive)
+        {
+            cancelButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            cancelButton.gameObject.SetActive(false);
+        }
 
         onYes = yesAction;
         onNo = noAction;

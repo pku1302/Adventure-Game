@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0dea751c2200444941326ae7e3a30c, type: 3}
   m_Name: Statue
   m_EditorClassIdentifier: Assembly-CSharp::MonsterData
-  maxHp: 1000
-  moveSpeed: 2
+  maxHp: 300
+  moveSpeed: 3
   wanderRadius: 5
   attackRange: 2
-  attackSpeed: 1
-  detectRange: 5
-  attackDamage: 10
+  attackSpeed: 0.5
+  detectRange: 3.5
+  attackDamage: 20

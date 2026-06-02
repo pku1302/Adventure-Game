@@ -23,11 +23,12 @@ public interface ILootPresenter
 {
     void TakeItem(ItemContainer container, int index);
     void OnDrop(ItemContainer from, ItemContainer to, int fromIndex, int toIndex, int amount, bool isSplitMode);
+    void StopLoot();
 }
 
 public interface IEnhancePresenter
 {
-    void EnhanceItem(InventoryItem item);
+    bool EnhanceItem(InventoryItem item);
     void SelectEnhanceItem(InventoryItem item);
 }
 
@@ -144,11 +145,13 @@ public class GamePresenter : IGamePresenter
     {
         uiManager.OpenConfirmPopup(
             $"[{data.dungeonName}]에 입장하시겠습니까?",
+            true,
             () =>
             {
                 EnterDungeon();
                 uiManager.CloseDungeonInfo();
-            });
+            }
+            );
     }
 
     private void EnterDungeon()
@@ -200,11 +203,20 @@ public class GamePresenter : IGamePresenter
         {
             sceneService.LoadHub();
         }
+        else if (target is TutorialNPC tutorialNPC)
+        {
+            uiManager.OpenTutorial();
+        }
     }
 
-    public void EnhanceItem(InventoryItem item)
+    public void StopLoot()
     {
-        enhanceService.Enhance(item);
+        lootService.StopLoot();
+    }
+
+    public bool EnhanceItem(InventoryItem item)
+    {
+        return enhanceService.Enhance(item);
     }
 
     private void HandleComplete()

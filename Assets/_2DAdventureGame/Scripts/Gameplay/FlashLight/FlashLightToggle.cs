@@ -8,10 +8,19 @@ public class FlashLightToggle : MonoBehaviour
 
     public float maxBattery = 100f;
     public float battery;
-    public float drainSpeed = 0.1f;
+    public float drainSpeed = 1f;
+
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip flashlightSFX;
+    [SerializeField]
+    private AudioClip errorSFX;
+    private GameManager gameManager;
 
     private void Start()
     {
+        gameManager = FindFirstObjectByType<GameManager>();
         battery = maxBattery;
         flashlight.enabled = false;
         hitbox.enabled = false;
@@ -19,14 +28,14 @@ public class FlashLightToggle : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.Instance.WasMouseRightClicked)
+        if (gameManager.CurrentState == GameState.GamePlay && InputManager.Instance.WasMouseRightClicked)
         {
             ToggleFlashlight();
         }
 
         if (flashlight.enabled)
         {
-            battery -= drainSpeed * Time.deltaTime;
+            battery -= Time.deltaTime;
 
             if (battery <= 0)
             {
@@ -40,8 +49,13 @@ public class FlashLightToggle : MonoBehaviour
     {
         if (battery > 0)
         {
+            audioSource.PlayOneShot(flashlightSFX);
             flashlight.enabled = !flashlight.enabled;
             hitbox.enabled = !hitbox.enabled;
+        }
+        else
+        {
+            audioSource.PlayOneShot(errorSFX);
         }
     }
 

@@ -53,8 +53,9 @@ public class StarAIComponent : AIComponent
     }
 
 
-    void HandleHit()
+    void HandleHit(bool isCritical)
     {
+        Hit.TakeHit(isCritical);
         stateMachine.ChangeState(hitState);
         stateChangeTimer = Monster.Data.attackSpeed / 4;
         currentAngry = AngryGage;
@@ -124,7 +125,6 @@ public class StarAIComponent : AIComponent
             if (currentAngry == 0)
             {
                 stateMachine.ChangeState(stopState);
-                target = null;
                 currentStop = StopGage;
             }
             return true;

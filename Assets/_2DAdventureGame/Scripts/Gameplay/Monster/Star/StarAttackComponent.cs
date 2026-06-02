@@ -28,6 +28,12 @@ public class StarAttackComponent : AttackComponent
         Destroy(effect, 0.5f);
     }
 
+    public override void SetAttackStart(Vector2 dir)
+    {
+        base.SetAttackStart(dir);
+        slashCooldown = 0f;
+    }
+
     public override void AttackEnd()
     {
         base.AttackEnd();

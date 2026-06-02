@@ -11,6 +11,7 @@ public abstract class ItemData : ScriptableObject
     public ItemType itemType;
     public int maxStack;
     public int sellPrice;
+    public int buyPrice;
 }
 
 public enum ItemType

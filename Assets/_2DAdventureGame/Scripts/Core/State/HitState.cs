@@ -14,7 +14,6 @@ public class HitState : IState
     public void Enter()
     {
         ai.Animation.SetHit();
-        ai.Hit.TakeHit();
     }
 
     public void Exit()

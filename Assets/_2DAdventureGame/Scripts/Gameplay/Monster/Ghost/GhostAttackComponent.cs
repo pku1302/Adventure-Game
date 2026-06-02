@@ -4,6 +4,9 @@ public class GhostAttackComponent : AttackComponent
 {
     private float thrustCooldown;
     private float snareCooldown;
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip snareSFX;
 
     public GameObject thrustHitBoxPrefab;
     GameObject thrustHitBox;
@@ -17,6 +20,7 @@ public class GhostAttackComponent : AttackComponent
         Init();
         snareCooldown = 0f;
         thrustCooldown = 0f;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,6 +48,7 @@ public class GhostAttackComponent : AttackComponent
         snare = snareObject.GetComponent<GhostSnare>();
         snare.OnSnare += ThrustCooldownReset;
         snare.Launch(direction, 500);
+        audioSource.PlayOneShot(snareSFX);
     }
 
     public override void AttackEnd()
@@ -80,19 +85,22 @@ public class GhostAttackComponent : AttackComponent
         {
             ai.Movement.StopMonster();
         }
-        else if (distance > 1f && thrustCooldown <= 0f)
+        else if (distance > 1.5f && thrustCooldown <= 0f)
         {
-            ai.Movement.Move(playerPos, ai.Monster.Data.moveSpeed * 1.5f);
+            ai.Movement.SetMoveSpeed(ai.Monster.Data.moveSpeed * 2.0f);
+            ai.Movement.Move(playerPos);
             ai.Animation.SetMove(direction);
         }
-        else if (distance <= 1f && thrustCooldown <= 0f)
+        else if (distance <= 1.5f && thrustCooldown <= 0f)
         {
+            ai.Movement.ResetMoveSpeed();
             ai.Animation.SetAttack(direction);
             ai.Movement.StopMonster();
             isAttacking = true;
         }
         else
         {
+            ai.Movement.ResetMoveSpeed();
             ai.Movement.Rush(direction * (-1) * ai.Monster.Data.moveSpeed);
             ai.Animation.SetMove(direction * (-1));
         }

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ShopContainerUI : ItemContainerUI
 {
+    [SerializeField]
+    private CursorManager cursorManager;
     private IShopPresenter shopPresenter;
 
     public override void TurnOff()
@@ -20,7 +22,7 @@ public class ShopContainerUI : ItemContainerUI
         {
             GameObject slot = Instantiate(slotPrefab, slotParent);
             ShopSlotUI ui = slot.GetComponent<ShopSlotUI>();
-            ui.Init(i, presenter, shopPresenter, container);
+            ui.Init(i, presenter, shopPresenter, container, cursorManager);
             slotUIs.Add(ui);
         }
     }

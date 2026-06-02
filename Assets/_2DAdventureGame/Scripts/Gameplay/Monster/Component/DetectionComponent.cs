@@ -10,7 +10,7 @@ public class DetectionComponent : MonoBehaviour
     void Start()
     {
         trigger = GetComponent<CircleCollider2D>();
-        trigger.radius = ai.Monster.Data.attackRange;
+        trigger.radius = 100f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,7 +18,7 @@ public class DetectionComponent : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             OnTargetEnter?.Invoke(collision.transform);
+            Destroy(gameObject);
         }
     }
-
 }

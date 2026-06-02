@@ -22,7 +22,7 @@ public class PoisonDebuff : StatusEffect
 
             if (tickTimer >= Tick)
             {
-                target.health.TakeDamage(damage);
+                target.health.TakeDamage(damage, DamageType.Poison);
                 tickTimer = 0f;
             }
         }

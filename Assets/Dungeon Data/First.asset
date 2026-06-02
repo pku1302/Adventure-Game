@@ -16,5 +16,5 @@ MonoBehaviour:
   description: "\uCD08\uBCF4\uB97C \uC704\uD55C \uACF3\t\t"
   warning: "\uBD88\uAC00\uC0AC\uB9AC \uC8FC\uC758"
   difficulty: "\uC26C\uC6C0"
-  thumbnail: {fileID: 21300012, guid: 3df66ef34f3f3414488489a5934136da, type: 3}
+  thumbnail: {fileID: 0}
   sceneName: 

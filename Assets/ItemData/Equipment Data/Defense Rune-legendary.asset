@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8820715741bc1428a9200891a080a4, type: 3}
+  m_Name: Defense Rune-legendary
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
+  itemName: "\uBC29\uC5B4\uB8EC"
+  description: "\uD53C\uD574\uB97C \uACBD\uAC10\uC2DC\uD0B5\uB2C8\uB2E4"
+  icon: {fileID: -5416132845224934115, guid: 3adcb3d22f45945428c4403b47a3b1f4, type: 3}
+  rarity: 3
+  itemType: 0
+  maxStack: 1
+  sellPrice: 0
+  buyPrice: 0
+  attack: 0
+  defense: 1
+  stamina: 0
+  speed: 0
+  id: dfe
+  nextEnhanceItem: {fileID: 0}
+  enhanceCost:
+    material: {fileID: 0}
+    materialCount: 0
+    gold: 0

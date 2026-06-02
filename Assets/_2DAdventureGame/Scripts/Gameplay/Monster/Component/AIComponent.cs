@@ -15,7 +15,7 @@ public abstract class AIComponent : MonoBehaviour
 
     public Monster Monster { get; protected set; }
     protected StateMachine stateMachine;
-
+    protected PlayerHealth targetHealth;
     protected IState chaseState;
     protected IState stopState;
     protected IState deadState;
@@ -41,7 +41,10 @@ public abstract class AIComponent : MonoBehaviour
             Health.OnDeath += HandleDeath;
         }
 
-        Detection.OnTargetEnter += t => target = t;
+        Detection.OnTargetEnter += t => { 
+            target = t;
+            targetHealth = target.GetComponent<PlayerHealth>();
+        };
     }
 
     public void ChangeState(IState newState)
@@ -66,6 +69,12 @@ public abstract class AIComponent : MonoBehaviour
             return false;
         }
 
+        if (targetHealth.isDead)
+        {
+            stateMachine.ChangeState(new WanderState(this));
+            return false;
+        }
+
         float distance = Vector2.Distance(target.position, transform.position);
 
         return  distance <= Monster.Data.attackRange;
@@ -75,6 +84,12 @@ public abstract class AIComponent : MonoBehaviour
     {
         if (target == null)
         {
+            return false;
+        }
+
+        if (targetHealth.isDead)
+        {
+            stateMachine.ChangeState(new WanderState(this));
             return false;
         }
 

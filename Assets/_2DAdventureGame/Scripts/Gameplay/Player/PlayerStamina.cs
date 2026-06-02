@@ -23,8 +23,14 @@ public class PlayerStamina : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentStamina = PlayerStats.stats.maxStamina;
-        maxStamina = PlayerStats.stats.maxStamina;
+        var playerStats = GetComponent<PlayerController>().stats;
+        currentStamina = playerStats.baseMaxStamina;
+        maxStamina = playerStats.baseMaxStamina;
+    }
+
+    public void SetMaxStamina(float amount)
+    {
+        maxStamina = amount;
     }
 
     public bool isExhausted()

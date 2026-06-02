@@ -43,8 +43,7 @@ public class InputManager : MonoBehaviour
     {
         WasMouseRightClicked = MouseRightAction.WasPressedThisFrame();
 
-        if (gameManager.CurrentState == GameState.GamePlay 
-            && InventoryAction.WasPressedThisFrame())
+        if (InventoryAction.WasPressedThisFrame())
         {
             presenter.ToggleInventory();
         }

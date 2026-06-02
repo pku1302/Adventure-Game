@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1317880875354578199}
   - component: {fileID: 8830132539655454426}
   - component: {fileID: 261960997460605861}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Detection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7535735459516258272, guid: 3688d62f4825a7347ac591e993b21ae7,
     type: 3}
@@ -485,8 +485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0f50d1562579942aa2d16dd716aff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootComponent
-  spriteRenderer: {fileID: 0}
-  lootTable: {fileID: 0}
+  spriteRenderer: {fileID: 1088124852238875654}
+  lootTable: {fileID: 11400000, guid: 9ecbe483c34dcbc409a4e601ba2f125d, type: 2}
   healthComponent: {fileID: 4395017883269639778}
   isLootingDone: 0
 --- !u!114 &7673702632264924087

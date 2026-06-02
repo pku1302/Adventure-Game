@@ -48,6 +48,6 @@ public class ChaseState : IState
             animationTimer -= Time.deltaTime;
         }
         //playerRandomPosition = (Vector2)PlayerController.player.transform.position + Random.insideUnitCircle * attackRange;
-        ai.Movement.Move(playerRandomPosition, ai.Monster.Data.moveSpeed);
+        ai.Movement.Move(playerRandomPosition);
     }
 }

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0dea751c2200444941326ae7e3a30c, type: 3}
   m_Name: Jiangshi
   m_EditorClassIdentifier: Assembly-CSharp::MonsterData
-  maxHp: 1000
+  maxHp: 350
   moveSpeed: 1
   wanderRadius: 5
-  attackRange: 1.6
-  attackSpeed: 2
-  detectRange: 7
+  attackRange: 1.4
+  attackSpeed: 1
+  detectRange: 3
   attackDamage: 15

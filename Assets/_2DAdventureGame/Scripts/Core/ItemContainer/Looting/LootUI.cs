@@ -33,6 +33,12 @@ public class LootUI : ItemContainerUI
         gameObject.SetActive(false);
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        lootPresenter.StopLoot();
+    }
+
     protected override void CreateSlotUIs(int index)
     {
         for (int i = 0; i < container.GetSlotCount(); i++)

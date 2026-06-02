@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0dea751c2200444941326ae7e3a30c, type: 3}
   m_Name: Ghost
   m_EditorClassIdentifier: Assembly-CSharp::MonsterData
-  maxHp: 1000
+  maxHp: 150
   moveSpeed: 3
   wanderRadius: 5
-  attackRange: 7
+  attackRange: 15
   attackSpeed: 2
-  detectRange: 8
+  detectRange: 5
   attackDamage: 5
