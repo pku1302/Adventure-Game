@@ -152,7 +152,7 @@ View → Presenter → Model
 
 ### Gameplay Video
 
-(YouTube 링크)
+([YouTube 링크](https://www.youtube.com/watch?v=1H1R7-QYvHs))
 
 ### GitHub
 
